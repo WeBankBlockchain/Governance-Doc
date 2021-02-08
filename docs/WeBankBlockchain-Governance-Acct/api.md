@@ -55,6 +55,64 @@ system.encryptType=0
 system.defaultGovernanceEnabled=true
 ```
 
+### 获取自动注入的对象
+
+#### 自动获取链操作底层的对象
+如果正确配置，可获得自动注入的FISCO BCOS SDK常用的对象。详见[FISCO BCOS Java SDK手册](https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/sdk/java_sdk/index.html)。
+
+```
+// 自动注入bcosSDK对象,主要包含了SDK相关的操作。
+@Autowired 
+private BcosSDK bcosSDK;
+// 自动注入Client对象,主要包含客户端相关的操作，
+@Autowired 
+private Client client;
+// 自动注入CryptoKeyPair对象,主要用于私钥相关的操作，包含了密码学相关操作的接口。
+@Autowired 
+private CryptoKeyPair cryptoKeyPair;
+
+```
+
+#### 自动获取账户治理接口控制器的对象
+账户治理类控制器包括了治理账户控制器（GovernAccountInitializer）、普通账户控制器（EndUserOperManager）、管理员模式的控制器（AdminModeGovernManager）、投票模式的控制器（VoteModeGovernManager）和社交投票控制器（SocialVoteManager）。
+
+其中，可按以下维度划分：
+1. 与**治理用户账户**操作相关的。
+   - 与治理账户通用操作相关的： 如创建治理合约的 GovernAccountInitializer 。
+   - 与特定的治理模式下的治理操作相关的：如管理员模式下的 AdminModeGovernManager 和投票模式下的（包含多签制和权重投票制）VoteModeGovernManager 。
+
+2. 与**普通用户账户**操作相关的。
+   - 普通用户操作相关的： 如普通用户操作相关的 EndUserOperManager ， 普通用户投票相关的 SocialVoteManager 。
+
+```
+@Autowired 
+private EndUserOperManager endUserOperManager;
+@Autowired 
+private SocialVoteManager socialVoteManager;
+@Autowired 
+private GovernAccountInitializer governAccountInitializer;
+@Autowired 
+private AdminModeGovernManager adminModeGovernManager;
+@Autowired 
+private VoteModeGovernManager voteModeGovernManager
+```
+
+## 功能列表
+
+### 治理账户类
+
+#### GovernAccountInitializer
+
+包含了创建治理治理合约类的接口。
+
+| 接口函数签名 |功能介绍| 参数说明|
+| --- | --- | --- |
+| WEGovernance createGovernAccount(CryptoKeyPair credential) | 创建管理员模式的治理合约。| 传入参数为管理员账户的私钥。 |
+| WEGovernance createGovernAccount(List<String> externalAccountList, int threshold) | 创建多签制模式的治理合约。| 传入参数为治理成员外部账户地址列表和通过的阈值。|
+| WEGovernance createGovernAccount(List<String> externalAccountList, List<BigInteger> weights, int threshold) | 创建权重投票模式的治理合约。| 传入参数为治理成员外部账户地址列表、各治理账户对应的权重和通过的阈值。 |
+
+
+
 ## 治理账户功能使用说明
 
 ### 创建治理合约
@@ -66,8 +124,13 @@ system.defaultGovernanceEnabled=true
     // 自动注入AdminModeGovernAccountInitializer对象
     @Autowired
     private GovernAccountInitializer governAccountInitializer;
+    // 自动注入CryptoKeyPair对象
+    @Autowired 
+    private CryptoKeyPair cryptoKeyPair;
+    // 使用自动注入的cryptoKeyPair随机创建一组管理员账户的私钥对
+    CryptoKeyPair governanceUser1Keypair = cryptoKeyPair.generateKeyPair();
     // 调用 createGovernAccount 方法生成管理员账户
-    WEGovernance govern = adminModeManager.createGovernAccount(u);
+    WEGovernance govern = adminModeManager.createGovernAccount(governUserKeypair);
 ```
 
 <br />**函数签名：**<br />
