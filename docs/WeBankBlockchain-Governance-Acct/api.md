@@ -4,7 +4,7 @@
 同时，提供了一个基于本SDK的[Governance-Account-Demo](https://github.com/WeBankBlockchain/Governance-Account-Demo)。Demo中包含了相关的合约代码和SDK的代码，供参考。
 
 ## 引入工程
-将Jar包引入到用户自己的Java业务项目中。
+将Jar包引入到用户自己的Springboot业务项目中，此处的项目名以Governance-Account-Demo为例。
 
 在自己的Java项目中的build.gradle文件中，添加maven仓库
 ```
@@ -19,8 +19,40 @@
 引入依赖：
 ```
     dependencies {
-	    implementation 'com.github.WeBankBlockchain:Governance-Account:Tag'
+	        implementation 'com.github.WeBankBlockchain:Governance-Account:master-SNAPSHOT'
 	}
+```
+
+## 配置环境
+
+### 拷贝证书
+
+```
+cd Governance-Account-Demo
+```
+
+将SDK证书拷贝到项目的conf目录下(这里假设SDK证书位于~/fisco/nodes/127.0.0.1/sdk目录)：
+```
+mkdir -p conf && cp -r ~/fisco/nodes/127.0.0.1/sdk/* conf
+```
+
+### 修改配置文件
+配置文件位于 src/main/resources/application.properties 目录下
+
+```
+## 节点地址和channel端口
+system.nodeStr=127.0.0.1:20200
+## 群组ID
+system.groupId=1
+
+## 密码类型 0-非国密，1-国密
+system.encryptType=0
+
+## 配置的客户端私钥，如不配置，则随机生成一个
+# system.hexPrivateKey=33b07356be6d05a930a104d20f482e36e55040e2f8d1af6169419e5e231629ac
+
+## 是否默认开启创建治理合约
+system.defaultGovernanceEnabled=true
 ```
 
 ## 治理账户功能使用说明
