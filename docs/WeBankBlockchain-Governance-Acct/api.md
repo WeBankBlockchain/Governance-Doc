@@ -77,11 +77,14 @@ private CryptoKeyPair cryptoKeyPair;
 账户治理类控制器包括了治理账户控制器（GovernAccountInitializer）、普通账户控制器（EndUserOperManager）、管理员模式的控制器（AdminModeGovernManager）、投票模式的控制器（VoteModeGovernManager）和社交投票控制器（SocialVoteManager）。
 
 其中，可按以下维度划分：
-1. 与**治理用户账户**操作相关的。
+1. 基础用户账户操作。
+   - 通用操作：BasicManager。 
+  
+2. 与**治理用户账户**操作相关的。继承了BasicManager。
    - 与治理账户通用操作相关的： 如创建治理合约的 GovernAccountInitializer 。
    - 与特定的治理模式下的治理操作相关的：如管理员模式下的 AdminModeGovernManager 和投票模式下的（包含多签制和权重投票制）VoteModeGovernManager 。
 
-2. 与**普通用户账户**操作相关的。
+3. 与**普通用户账户**操作相关的。继承了BasicManager。
    - 普通用户操作相关的： 如普通用户操作相关的 EndUserOperManager ， 普通用户投票相关的 SocialVoteManager 。
 
 ```
@@ -99,21 +102,102 @@ private VoteModeGovernManager voteModeGovernManager
 
 ## 功能列表
 
+### 通用操作类
+
+#### BasicManager
+包含了用户账户创建，查询用户账户映射的地址，查询用户外部地址和查询用户账户状态等基础功能。
+
+| 功能介绍 | 接口函数签名 | 参数说明|
+| --- | --- | --- |
+| 获取用户的内部映射账户的地址 | String getAccountAddress() |  |
+| 根据外部账户地址创建用户账户 | String createAccount(String externalAccount) | 传入参数为用户外部账户地址。 |
+| 指定账户管理器地址和外部账户地址创建用户账户 | String createAccount(AccountManager accountManager, String externalAccount) | 传入参数为账户管理器地址和外部账户地址。 |
+| 根据内部映射账户地址获取外部账户地址 |  String getExternalAccount(String userAccount)  | 传入参数为内部映射账户的地址。|
+| 根据外部账户地址获取用户账户对象 | UserAccount getUserAccount(String externalAccount) | 传入参数为用户外部账户地址。 |
+| 获取账户状态 |  int getUserAccountStatus(String externalAccount) | 传入参数为用户外部账户地址。|
+| 根据外部账户地址获取内部映射账户的地址 |  String getBaseAccountAddress(String externalAccount)  | 传入参数为用户外部账户地址。 |
+| 判断外部账户地址是否已创建 |  boolean hasAccount(String externalAccount) | 传入参数为用户外部账户地址。|
+| 判断账户状态是否正常 | boolean isExternalAccountNormal(String externalAccount) | 传入参数为用户外部账户地址。|
+| 修改绑定的私钥对 |   void changeCredentials(CryptoKeyPair credentials)  | 传入参数为新的私钥对。|
+
+
 ### 治理账户类
 
 #### GovernAccountInitializer
 
-包含了创建治理治理合约类的接口。
+包含了创建治理治理合约类的接口。只有治理者才能发起下述接口的交易。
 
-| 接口函数签名 |功能介绍| 参数说明|
+| 功能介绍 | 接口函数签名 | 参数说明|
 | --- | --- | --- |
-| WEGovernance createGovernAccount(CryptoKeyPair credential) | 创建管理员模式的治理合约。| 传入参数为管理员账户的私钥。 |
-| WEGovernance createGovernAccount(List<String> externalAccountList, int threshold) | 创建多签制模式的治理合约。| 传入参数为治理成员外部账户地址列表和通过的阈值。|
-| WEGovernance createGovernAccount(List<String> externalAccountList, List<BigInteger> weights, int threshold) | 创建权重投票模式的治理合约。| 传入参数为治理成员外部账户地址列表、各治理账户对应的权重和通过的阈值。 |
+| 创建管理员模式的治理合约 | WEGovernance createGovernAccount(CryptoKeyPair credential) | 传入参数为管理员账户的私钥。 |
+| 创建多签制模式的治理合约 | WEGovernance createGovernAccount(List<String> externalAccountList, int threshold) | 传入参数为治理成员外部账户地址列表和通过的阈值。|
+| 创建权重投票模式的治理合约 | WEGovernance createGovernAccount(List<String> externalAccountList, List<BigInteger> weights, int threshold) | 传入参数为治理成员外部账户地址列表、各治理账户对应的权重和通过的阈值。 |
+
+#### AdminModeGovernManager
+包含了管理员模式下的各类操作接口。只有超级管理员才能发起下述接口的交易。
+
+| 功能介绍 | 接口函数签名 | 参数说明|
+| --- | --- | --- |
+| 移交管理员权限 | TransactionReceipt transferAdminAuth(String newAdminAddr) | 传入参数为新的管理员外部账户地址。 |
+| 重置用户账户私钥 | TransactionReceipt resetAccount(String oldAccount, String newAccount) | 传入参数为旧的以及新的用户外部账户地址。|
+| 冻结用户账户 | TransactionReceipt freezeAccount(String externalAccount) | 传入参数为要冻结的外部账户地址。 |
+| 解冻用户账户 | TransactionReceipt unfreezeAccount(String externalAccount) | 传入参数为要解冻的外部账户地址。 |
+| 注销用户账户 | TransactionReceipt cancelAccount(String externalAccount) | 传入参数为要注销的外部账户地址。 |
+
+#### VoteModeGovernManager
+包含了投票模式下的各类操作接口，包含了多签制和阈值投票。其中，多签制也可被视为一种特殊的阈值投票，即所有治理账户的投票阈值为1。只有治理者才能发起下述接口的交易。
+
+| 功能介绍 | 接口函数签名 | 参数说明|
+| --- | --- | --- |
+| 请求重设投票阈值 | BigInteger requestResetThreshold(int newThreshold) | 传入参数为新投票阈值。 |
+| 请求删除治理账户 |  BigInteger requestRemoveGovernAccount(String externalAccount) | 传入参数为请求删除的用户外部账户地址。|
+| 请求重置治理账户 | BigInteger requestResetGovernAccount(String externalAccount, int weight) | 传入参数为待重置的外部账户地址和投票的权重。 |
+| 请求添加治理账户 | BigInteger requestAddGovernAccount(String externalAccount, int weight) | 传入参数为待添加的外部账户地址和投票的权重。 |
+| 请求添加治理账户 | BigInteger requestAddGovernAccount(String externalAccount) | 传入参数为待添加的外部账户地址，投票权重默认为1。 |
+| 请求重置用户账户 |  BigInteger requestResetAccount(String newExternalAccount, String oldExternalAccount) | 传入参数为待重置的新旧两个用户外部账户地址。|
+| 请求冻结用户账户 |  BigInteger requestFreezeAccount(String externalAccount) | 传入参数为待冻结的用户外部账户地址。|
+| 请求解冻用户账户 |  BigInteger requestUnfreezeAccount(String externalAccount)  | 传入参数为待解冻的外部账户地址。 |
+| 请求注销用户账户 | BigInteger requestCancelAccount(String externalAccount) | 传入参数为待注销的外部账户地址。 |
+| 对请求内容进行投票 | TransactionReceipt vote(BigInteger requestId, boolean agreed) | 传入参数为投票事务的ID和投票意见。 |
+| 执行重置用户账户 | TransactionReceipt resetAccount(BigInteger requestId, String newExternalAccount, String oldExternalAccount) | 传入参数为投票事务ID，重置的新旧两个用户外部账户地址。 |
+| 执行冻结用户账户 | TransactionReceipt freezeAccount(BigInteger requestId, String externalAccount) | 传入参数为投票事务ID和操作的外部账户地址。|
+| 执行解冻用户账户 | TransactionReceipt unfreezeAccount(BigInteger requestId, String externalAccount) | 传入参数为投票事务ID和操作的外部账户地址。 |
+| 执行注销用户账户 |  TransactionReceipt cancelAccount(BigInteger requestId, String externalAccount) | 传入参数为投票事务ID和操作的外部账户地址。 |
+| 执行重设投票阈值 | TransactionReceipt resetThreshold(BigInteger requestId, int threshold)  | 传入参数为投票事务ID和重设的阈值。 |
+| 执行删除治理账户 | TransactionReceipt removeGovernAccount(BigInteger requestId, String externalAccount) | 传入参数为投票事务ID和操作的外部账户地址。 |
+| 执行重置治理账户私钥 | TransactionReceipt resetGovernAccount(BigInteger requestId, String externalAccount, int weight) | 传入参数为投票事务ID、操作的外部账户地址和重置的阈值。|
+| 执行添加治理账户 | TransactionReceipt addGovernAccount(BigInteger requestId, String externalAccount, int weight) |传入参数为投票事务ID、操作的外部账户地址和重置的阈值。 |
+| 执行添加治理账户 | TransactionReceipt addGovernAccount(BigInteger requestId, String externalAccount) | 传入参数为投票事务ID和操作的外部账户地址。默认的投票阈值为1. |
+| 根据交易回执获取投票ID | BigInteger getId(TransactionReceipt tr) | 传入参数为交易回执。 |
+| 根据投票ID获取投票请求信息 | VoteRequestInfo getVoteRequestInfo(BigInteger requestId) | 传入参数为投票事务ID。 |
+| 获取治理合约的投票权重信息 |  WeightInfo getWeightInfo() |  |
+
+### 普通用户账户类
+
+#### EndUserOperManager
+包含了普通用户账户相关的操作。
+
+| 功能介绍 | 接口函数签名 | 参数说明|
+| --- | --- | --- |
+| 重置账户私钥 | TransactionReceipt resetAccount(String newCredential) | 传入参数为新的外部账户地址。 |
+| 删除社交好友方式重置私钥 | TransactionReceipt modifyManagerType() |  |
+| 修改关联社交好友 | TransactionReceipt modifyManagerType(List<String> voters)  | 传入参数为三个关联的社交好友。 |
+| 添加关联的社交好友账户 | TransactionReceipt addRelatedAccount(String externalAccount) | 传入参数为要添加的社交好友外部账户地址。|
+| 删除关联的社交好友账户 | TransactionReceipt removeRelatedAccount(String externalAccount) | 传入参数为要删除的社交好友外部账户地址。 |
+| 注销用户账户 | TransactionReceipt cancelAccount() | |
+| 查询私钥重置方式 | int getUserStatics()  |  |
+
+#### SocialVoteManager
+包含了社交好友在行使重置私钥投票功能相关的操作。操作的主体为被其他用户设置并关联的社交好友账户。例如小明设置了三个社交好友的外部账户地址，其中一个好友为小华，当小明丢失了私钥后，可让小华替他发起重置的投票，只要三个社交好友中有两个投票通过，就可以发起重置小明私钥的操作了。这里的SocialVoteManager就是提供了小华相关的操作。
+
+| 功能介绍 | 接口函数签名 | 参数说明|
+| --- | --- | --- |
+| 申请重置社交好友的私钥 | TransactionReceipt requestResetAccount(String newExternalAccount, String oldExternalAccount)| 传入参数为需要重置的新旧两个外部账户地址。 |
+| 所关联的社交好友进行投票 |TransactionReceipt vote(String oldExternalAccount, boolean agreed) | 传入参数为待重置的外部账户地址和投票意见。|
+| 执行重置私钥操作 | TransactionReceipt resetAccount(String newExternalAccount, String oldExternalAccount)| 传入参数为需要重置的新旧两个外部账户地址。 |
 
 
-
-## 治理账户功能使用说明
+## 治理账户功能使用详细说明
 
 ### 创建治理合约
 #### 管理员模式
@@ -878,7 +962,7 @@ private VoteModeGovernManager voteModeGovernManager;
 
 其余部分颇为相似，可参考基于相同权重的投票模式
 
-## 普通用户接口
+## 普通用户接口使用详细说明
 
 
 ### 普通账户主要功能
