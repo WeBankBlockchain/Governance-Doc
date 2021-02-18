@@ -19,7 +19,7 @@
 引入依赖：
 ```
     dependencies {
-	        implementation 'com.github.WeBankBlockchain:Governance-Account:master-SNAPSHOT'
+	    implementation 'com.github.WeBankBlockchain:Governance-Account:master-SNAPSHOT'
 	}
 ```
 
@@ -74,10 +74,13 @@ private CryptoKeyPair cryptoKeyPair;
 ```
 
 #### 自动获取账户治理接口控制器的对象
+
+相关的业务操作流程可参考[组件介绍](./intro.md)
+
 账户治理类控制器包括了治理账户控制器（GovernAccountInitializer）、普通账户控制器（EndUserOperManager）、管理员模式的控制器（AdminModeGovernManager）、投票模式的控制器（VoteModeGovernManager）和社交投票控制器（SocialVoteManager）。
 
 其中，可按以下维度划分：
-1. 基础用户账户操作。
+1. 通用的**基础用户账户**操作。
    - 通用操作：BasicManager。 
   
 2. 与**治理用户账户**操作相关的。继承了BasicManager。
@@ -105,7 +108,7 @@ private VoteModeGovernManager voteModeGovernManager
 ### 通用操作类
 
 #### BasicManager
-包含了用户账户创建，查询用户账户映射的地址，查询用户外部地址和查询用户账户状态等基础功能。
+包含了用户账户创建，查询用户账户映射的地址，查询用户外部地址和查询用户账户状态等基础功能。**所有用户**可以发起以下操作。
 
 | 功能介绍 | 接口函数签名 | 参数说明|
 | --- | --- | --- |
@@ -125,7 +128,7 @@ private VoteModeGovernManager voteModeGovernManager
 
 #### GovernAccountInitializer
 
-包含了创建治理治理合约类的接口。只有治理者才能发起下述接口的交易。
+包含了创建治理治理合约类的接口。只有**治理者**才能发起下述接口的交易。
 
 | 功能介绍 | 接口函数签名 | 参数说明|
 | --- | --- | --- |
@@ -134,7 +137,7 @@ private VoteModeGovernManager voteModeGovernManager
 | 创建权重投票模式的治理合约 | WEGovernance createGovernAccount(List<String> externalAccountList, List<BigInteger> weights, int threshold) | 传入参数为治理成员外部账户地址列表、各治理账户对应的权重和通过的阈值。 |
 
 #### AdminModeGovernManager
-包含了管理员模式下的各类操作接口。只有超级管理员才能发起下述接口的交易。
+包含了管理员模式下的各类操作接口。只有在超级管理员模式下的**超级管理员**才能发起下述接口的交易。
 
 | 功能介绍 | 接口函数签名 | 参数说明|
 | --- | --- | --- |
@@ -145,7 +148,7 @@ private VoteModeGovernManager voteModeGovernManager
 | 注销用户账户 | TransactionReceipt cancelAccount(String externalAccount) | 传入参数为要注销的外部账户地址。 |
 
 #### VoteModeGovernManager
-包含了投票模式下的各类操作接口，包含了多签制和阈值投票。其中，多签制也可被视为一种特殊的阈值投票，即所有治理账户的投票阈值为1。只有治理者才能发起下述接口的交易。
+包含了投票模式下的各类操作接口，包含了多签制和阈值投票。其中，多签制也可被视为一种特殊的阈值投票，即所有治理账户的投票阈值为1。只有在投票模式下的**治理者**才能发起下述接口的交易。
 
 | 功能介绍 | 接口函数签名 | 参数说明|
 | --- | --- | --- |
@@ -175,7 +178,7 @@ private VoteModeGovernManager voteModeGovernManager
 ### 普通用户账户类
 
 #### EndUserOperManager
-包含了普通用户账户相关的操作。
+包含了普通用户账户相关的操作。**所有用户**可以发起以下操作。
 
 | 功能介绍 | 接口函数签名 | 参数说明|
 | --- | --- | --- |
@@ -189,6 +192,8 @@ private VoteModeGovernManager voteModeGovernManager
 
 #### SocialVoteManager
 包含了社交好友在行使重置私钥投票功能相关的操作。操作的主体为被其他用户设置并关联的社交好友账户。例如小明设置了三个社交好友的外部账户地址，其中一个好友为小华，当小明丢失了私钥后，可让小华替他发起重置的投票，只要三个社交好友中有两个投票通过，就可以发起重置小明私钥的操作了。这里的SocialVoteManager就是提供了小华相关的操作。
+
+只有被其他用户所委托进行社交好友关联来重置的用户可以发起以下操作。
 
 | 功能介绍 | 接口函数签名 | 参数说明|
 | --- | --- | --- |
