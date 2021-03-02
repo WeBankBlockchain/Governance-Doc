@@ -1904,6 +1904,12 @@ EndUserOperManager endUserOperManager = new EndUserOperManager(governance, clien
 String account = endUserAdminManager.createAccount(p1Address);
 ```
 
+<br />**参考执行返回日志：**<br />
+```s
+User account created is [ 0x0559525b0dbf461bcd450f687c227d3c5ba9607d ]
+new account created: [ 0xdb2ab65d2aba4f57db8fb3866ed8a2d5727b30cc ], created by [ 0x22caf10fd5b32a7413e0e1bf4bd07fc28566e513 ]
+```
+
 <br />**函数签名：**<br />
 
 ```java
@@ -1926,6 +1932,11 @@ String account = endUserAdminManager.createAccount(p1Address);
 
 ```java
 TransactionReceipt tr = endUserAdminManager.resetAccount(p2Address);
+```
+
+<br />**参考执行返回日志：**<br />
+```s
+External account [ 0x22caf10fd5b32a7413e0e1bf4bd07fc28566e513 ] reset by self to new external account [ 0x092fa98bfa86dbf4684d90364cf656e88e075e05 ] 
 ```
 
 <br />**函数签名：**<br />
@@ -1951,6 +1962,11 @@ TransactionReceipt resetAccount(String newCredential)
 TransactionReceipt tr = endUserAdminManager.cancelAccount();
 ```
 
+<br />**参考执行返回日志：**<br />
+```s
+External account canceled by self: [ 0x092fa98bfa86dbf4684d90364cf656e88e075e05 ] 
+```
+
 <br />**函数签名：**<br />
 
 ```java
@@ -1973,6 +1989,13 @@ voters.add(u1.getAddress());
 voters.add(u2.getAddress());
 TransactionReceipt tr = endUserAdminManager.modifyManagerType(voters);
 ```
+<br />**参考执行返回日志：**<br />
+```s
+Set Account [ 0x22caf10fd5b32a7413e0e1bf4bd07fc28566e513 ] to social reset mode.
+ --------------------------------------  
+ threshold is 2 
+ Voters: ["0x1a26865e04fdd739949ca2ee519071cf7457ce9c","0x0c3f18a50003c70546aa17f72d47c9e6b7bacd28","0xc86308dc9d20b7edcb17988e4dafb3dc98540bd8"] 
+```
 
 <br />**函数签名：**<br />
 
@@ -1992,57 +2015,20 @@ TransactionReceipt modifyManagerType()
 - TransactionReceipt 交易回执
 
 
-### 添加一个社交好友
 
-**具体调用示例：**
 
+## 使用社交好友投票重置私钥
+
+### 引入控制器
+
+可通过手动传参创建控制器。
 ```java
-TransactionReceipt tr = endUserAdminManager.addRelatedAccount(userAddress);
+SocialVoteManager socialVoteManager = new SocialVoteManager(governance, client, cryptoKeypair);
 ```
 
-<br />**函数签名：**<br />
+在配置了自动创建治理合约的场景下，也可通过Spring自动注入对象。
 
-```java
-TransactionReceipt addRelatedAccount(String account)
-```
-
-<br />**输入参数：**<br />
-
-- account  被添加好友的外部账户地址。
-
-
-<br />**返回参数：**<br />
-
-- TransactionReceipt 交易回执
-
-
-### 删除一个社交好友
-
-**具体调用示例：**
-
-```java
-TransactionReceipt tr = endUserAdminManager.removeRelatedAccount(userAddress);
-```
-
-<br />**函数签名：**<br />
-
-```java
-TransactionReceipt removeRelatedAccount(String account)
-```
-
-<br />**输入参数：**<br />
-
-- account  被删除好友的外部账户地址。
-
-
-<br />**返回参数：**<br />
-
-- TransactionReceipt 交易回执
-
-
-### 使用社交好友投票重置私钥
-
-#### 重置用户私钥
+### 重置用户私钥
 
 参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
 <br />社交好友投票相关的操作在 SocialVoteManager 类中。<br />
@@ -2060,6 +2046,43 @@ socialVoteManager.vote(requestId, true);
 socialVoteManager.changeCredentials(user1);
 // 发起重置私钥操作
 TransactionReceipt tr = socialVoteManager.resetAccount(newAddress, oldAddress);
+```
+
+<br />**参考执行返回日志：**<br />
+```s
+ Request reset account [ 0x508ec78ffb74ed7bd4b52090915c985ec9a2e15b ] to new account [ 0x781372c133eb2088df8de277f8fc3516a6be2c1f ]
+credentials change to [ 0xa4382265425421a435cdb2428a67caf3e190f99d ] from [ 0x508ec78ffb74ed7bd4b52090915c985ec9a2e15b ]
+ start vote of account config: [ 0xe529c202d32af26b0efba39661cbdcf9fcc67ec9 ] 
+ --------------------------------------  
+ voter: [ 0xa4382265425421a435cdb2428a67caf3e190f99d ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 2 ] 
+ request address is [ 0x508ec78ffb74ed7bd4b52090915c985ec9a2e15b ] 
+ vote type: [ change credential ] 
+ threshod is [ 2 ] 
+ weight is [ 1 ] 
+ vote passed? [ false ] 
+
+credentials change to [ 0x13ef955bb5c0a97b38671ecfb684d52109f4b5d0 ] from [ 0xa4382265425421a435cdb2428a67caf3e190f99d ]
+ start vote of account config: [ 0xe529c202d32af26b0efba39661cbdcf9fcc67ec9 ] 
+ --------------------------------------  
+ voter: [ 0x13ef955bb5c0a97b38671ecfb684d52109f4b5d0 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 2 ] 
+ request address is [ 0x508ec78ffb74ed7bd4b52090915c985ec9a2e15b ] 
+ vote type: [ change credential ] 
+ threshod is [ 2 ] 
+ weight is [ 2 ] 
+ vote passed? [ true ] 
+
+credentials change to [ 0x508ec78ffb74ed7bd4b52090915c985ec9a2e15b ] from [ 0x13ef955bb5c0a97b38671ecfb684d52109f4b5d0 ]
+External account reset to [ 0x781372c133eb2088df8de277f8fc3516a6be2c1f ] from [ 0x508ec78ffb74ed7bd4b52090915c985ec9a2e15b ] 
 ```
 
 #### 发起重置用户私钥投票申请
@@ -2081,7 +2104,7 @@ TransactionReceipt tr = socialVoteManager.resetAccount(newAddress, oldAddress);
 - TransactionReceipt 交易回执。
 
 
-##### 投票
+#### 投票
 
 **函数签名：**
 
@@ -2100,7 +2123,7 @@ TransactionReceipt vote(String oldCredential, boolean agreed)
 - TransactionReceipt 交易回执。
 
 
-##### 重置用户私钥
+#### 重置用户私钥
 
 **函数签名：**
 
