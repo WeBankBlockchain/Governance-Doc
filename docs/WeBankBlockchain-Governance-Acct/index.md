@@ -23,7 +23,7 @@
    :maxdepth: 5
 
    term_def.md
-   intro.md
+   api_intro.md
    quickstart.md
    api.md
    demo.md

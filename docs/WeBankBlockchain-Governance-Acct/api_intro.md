@@ -496,7 +496,7 @@ private VoteModeGovernManager voteModeGovernManager;
 参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
 <br />**具体调用示例：**<br />
 
-```
+```java
     // 发起投票请求
     BigInteger requestId = voteModeGovernManager.requestResetAccount(p2.getAddress(), p1.getAddress());
     // 执行投票
@@ -1156,7 +1156,7 @@ private EndUserOperManager endUserOperManager;
 
 **函数签名：**
 
-```
+```java
     TransactionReceipt vote(String oldCredential, boolean agreed)
 ```
 
