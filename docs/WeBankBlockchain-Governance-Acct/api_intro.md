@@ -506,16 +506,56 @@ TransactionReceipt vote(BigInteger requestId, boolean agreed)
 
 ```java
 // 发起投票请求
-BigInteger requestId = voteModeGovernManager.requestResetAccount(p2.getAddress(), p1.getAddress());
+BigInteger requestId = voteModeGovernManager.requestResetAccount(address1, address2);
 // 执行投票
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.changeCredentials(user2);
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u);
+voteModeGovernManager.changeCredentials(user1);
 // 发起重置私钥操作
-TransactionReceipt tr = voteModeGovernManager.resetAccount(requestId, p2.getAddress(), p1.getAddress());
+TransactionReceipt tr = voteModeGovernManager.resetAccount(requestId, address2, address1);
+```
+
+
+<br />**参考执行返回日志：**<br />
+```s
+ Governance contract [ 0x56542c78f625648d9a93f12099264113fad84197 ] request to reset account, from [ 0xb6a42b5dcdb7b49fce99ec708a42355e042b2d56 ] to [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ]
+Vote request id is [ 10001 ]
+ start vote, Request id: [ 10001 ] 
+ --------------------------------------  
+ voter: [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10001 ] 
+ request address is [ 0xb6a42b5dcdb7b49fce99ec708a42355e042b2d56 ] 
+ vote type: [ change credential ] 
+ threshod is [ 2 ] 
+ weight is [ 1 ] 
+ vote passed? [ false ] 
+
+credentials change to [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] from [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ]
+ start vote, Request id: [ 10001 ] 
+ --------------------------------------  
+ voter: [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10001 ] 
+ request address is [ 0xb6a42b5dcdb7b49fce99ec708a42355e042b2d56 ] 
+ vote type: [ change credential ] 
+ threshod is [ 2 ] 
+ weight is [ 2 ] 
+ vote passed? [ true ] 
+
+credentials change to [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] from [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ]
+reset account succeed, from [ 0xb6a42b5dcdb7b49fce99ec708a42355e042b2d56 ] to [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ]
 ```
 
 ##### 发起重置用户私钥投票申请
@@ -564,16 +604,55 @@ BigInteger requestResetAccount(String newCredential, String oldCredential)
 
 ```java
 // 发起投票请求
-BigInteger requestId = voteModeGovernManager.requestFreezeAccount(p2.getAddress());
+BigInteger requestId = voteModeGovernManager.requestFreezeAccount(address2);
 // 执行投票
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.changeCredentials(user1);
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u);
+voteModeGovernManager.changeCredentials(user2);
 // 发起重置私钥操作
-TransactionReceipt tr = voteModeGovernManager.freezeAccount(requestId, p2.getAddress());
+TransactionReceipt tr = voteModeGovernManager.freezeAccount(requestId, address2);
+```
+
+<br />**参考执行返回日志：**<br />
+```s
+Governance contract [ 0x56542c78f625648d9a93f12099264113fad84197 ] request to freeze external account [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ]
+Vote request id is [ 10002 ]
+credentials change to [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] from [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ]
+ start vote, Request id: [ 10002 ] 
+ --------------------------------------  
+ voter: [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10002 ] 
+ request address is [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ] 
+ vote type: [ freeze account ] 
+ threshod is [ 2 ] 
+ weight is [ 1 ] 
+ vote passed? [ false ] 
+
+credentials change to [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] from [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ]
+ start vote, Request id: [ 10002 ] 
+ --------------------------------------  
+ voter: [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10002 ] 
+ request address is [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ] 
+ vote type: [ freeze account ] 
+ threshod is [ 2 ] 
+ weight is [ 2 ] 
+ vote passed? [ true ] 
+
+freeze account [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ] succeed 
 ```
 
 ##### 发起冻结用户账户投票申请
@@ -620,16 +699,55 @@ TransactionReceipt freezeAccount(BigInteger requestId, String credential)
 
 ```java
 // 发起投票请求
-BigInteger requestId = voteModeGovernManager.requestUnreezeAccount(p2.getAddress());
+BigInteger requestId = voteModeGovernManager.requestUnreezeAccount(address2);
 // 执行投票
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.changeCredentials(user1);
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u);
+voteModeGovernManager.changeCredentials(user2);
 // 发起重置私钥操作
-TransactionReceipt tr = voteModeGovernManager.unfreezeAccount(requestId, p2.getAddress());
+TransactionReceipt tr = voteModeGovernManager.unfreezeAccount(requestId, address2);
+```
+
+<br />**参考执行返回日志：**<br />
+```s
+Governance contract [ 0x56542c78f625648d9a93f12099264113fad84197 ] request to unfreeze external account [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ]
+Vote request id is [ 10003 ]
+credentials change to [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] from [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ]
+ start vote, Request id: [ 10003 ] 
+ --------------------------------------  
+ voter: [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10003 ] 
+ request address is [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ] 
+ vote type: [ unfreeze account ] 
+ threshod is [ 2 ] 
+ weight is [ 1 ] 
+ vote passed? [ false ] 
+
+credentials change to [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] from [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ]
+ start vote, Request id: [ 10003 ] 
+ --------------------------------------  
+ voter: [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10003 ] 
+ request address is [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ] 
+ vote type: [ unfreeze account ] 
+ threshod is [ 2 ] 
+ weight is [ 2 ] 
+ vote passed? [ true ] 
+
+unfreeze account [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ] succeed 
 ```
 
 ##### 发起解冻用户账户投票申请
@@ -676,16 +794,56 @@ TransactionReceipt unfreezeAccount(BigInteger requestId, String credential)
 
 ```java
 // 发起投票请求
-BigInteger requestId = voteModeGovernManager.requestCancelAccount(p2.getAddress());
+BigInteger requestId = voteModeGovernManager.requestCancelAccount(address2);
 // 执行投票
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.changeCredentials(user2);
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u);
+voteModeGovernManager.changeCredentials(user1);
 // 发起重置私钥操作
-TransactionReceipt tr = voteModeGovernManager.cancelAccount(requestId, p2.getAddress());
+TransactionReceipt tr = voteModeGovernManager.cancelAccount(requestId, address2);
+```
+
+<br />**参考执行返回日志：**<br />
+```s
+Governance contract [ 0x56542c78f625648d9a93f12099264113fad84197 ] request to cancel external account [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ]
+Vote request id is [ 10004 ]
+credentials change to [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] from [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ]
+ start vote, Request id: [ 10004 ] 
+ --------------------------------------  
+ voter: [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10004 ] 
+ request address is [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ] 
+ vote type: [ cancel account ] 
+ threshod is [ 2 ] 
+ weight is [ 1 ] 
+ vote passed? [ false ] 
+
+credentials change to [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] from [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ]
+ start vote, Request id: [ 10004 ] 
+ --------------------------------------  
+ voter: [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10004 ] 
+ request address is [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ] 
+ vote type: [ cancel account ] 
+ threshod is [ 2 ] 
+ weight is [ 2 ] 
+ vote passed? [ true ] 
+
+cancel account [ 0xc952d06d9b5d7179b533901aab9146f5e99afb7e ] succeed 
+
 ```
 
 
@@ -738,12 +896,51 @@ BigInteger requestId = voteModeGovernManager.requestResetThreshold(newThreshold)
 // 执行投票
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.changeCredentials(user2);
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u);
+voteModeGovernManager.changeCredentials(user1);
 // 发起重置私钥操作
 TransactionReceipt tr = voteModeGovernManager.resetThreshold(requestId, newThreshold);
+```
+
+<br />**参考执行返回日志：**<br />
+```s
+Governance contract [ 0x56542c78f625648d9a93f12099264113fad84197 ] request reset threshold to [ 1 ]
+Vote request id is [ 10005 ]
+credentials change to [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] from [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ]
+ start vote, Request id: [ 10005 ] 
+ --------------------------------------  
+ voter: [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10005 ] 
+ request address is [ 0x56542c78f625648d9a93f12099264113fad84197 ] 
+ vote type: [ reset threshold ] 
+ threshod is [ 2 ] 
+ weight is [ 1 ] 
+ vote passed? [ false ] 
+
+credentials change to [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] from [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ]
+ start vote, Request id: [ 10005 ] 
+ --------------------------------------  
+ voter: [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10005 ] 
+ request address is [ 0x56542c78f625648d9a93f12099264113fad84197 ] 
+ vote type: [ reset threshold ] 
+ threshod is [ 2 ] 
+ weight is [ 2 ] 
+ vote passed? [ true ] 
+
+reset threshold [ 1 ] succeed 
 ```
 
 ##### 发起重置阈值投票申请
@@ -790,16 +987,39 @@ TransactionReceipt resetThreshold(BigInteger requestId, int threshold)
 
 ```java
 // 发起投票请求
-BigInteger requestId = voteModeGovernManager.requestRemoveGovernAccount(p2.getAddress());
+BigInteger requestId = voteModeGovernManager.requestRemoveGovernAccount(user3Address);
 // 执行投票
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.changeCredentials(user2);
 voteModeGovernManager.vote(requestId, true);
 // 切换投票者
-voteModeGovernManager.changeCredentials(u);
+voteModeGovernManager.changeCredentials(user1);
 // 发起重置私钥操作
-TransactionReceipt tr = voteModeGovernManager.removeGovernAccount(requestId, p2.getAddress());
+TransactionReceipt tr = voteModeGovernManager.removeGovernAccount(requestId, user3Address);
+```
+
+<br />**参考执行返回日志：**<br />
+```s
+Governance contract [ 0x56542c78f625648d9a93f12099264113fad84197 ] request to remove governance account [ 0x92217c219165d5af708afea698a910fe9ba4b0c9 ]
+Vote request id is [ 10006 ]
+credentials change to [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] from [ 0xc48cc67b2cb6cfa1ba599f98e30adf2dd12e2f47 ]
+ start vote, Request id: [ 10006 ] 
+ --------------------------------------  
+ voter: [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10006 ] 
+ request address is [ 0x92217c219165d5af708afea698a910fe9ba4b0c9 ] 
+ vote type: [ reset weight ] 
+ threshod is [ 1 ] 
+ weight is [ 1 ] 
+ vote passed? [ true ] 
+
+Contract [ 0x56542c78f625648d9a93f12099264113fad84197 ] remove governance account [ 0x92217c219165d5af708afea698a910fe9ba4b0c9 ] succeed 
 ```
 
 ##### 发起删除一个治理账户投票申请
@@ -856,6 +1076,29 @@ voteModeGovernManager.vote(requestId, true);
 voteModeGovernManager.changeCredentials(u);
 // 发起重置私钥操作
 TransactionReceipt tr = voteModeGovernManager.addGovernAccount(requestId, p2.getAddress());
+```
+
+<br />**参考执行返回日志：**<br />
+```s
+Governance contract [ 0x56542c78f625648d9a93f12099264113fad84197 ] request to add governance account [ 0x92217c219165d5af708afea698a910fe9ba4b0c9 ], weight [ 1 ]
+Vote request id is [ 10007 ]
+ start vote, Request id: [ 10007 ] 
+ --------------------------------------  
+ voter: [ 0xa9d5c2f248f27d4976e99c7430789e12b484fd81 ] 
+ voter weight is [ 1 ] 
+ agreed: [ true ] 
+
+the current vote info: 
+ -------------------------------------- 
+ request id [ 10007 ] 
+ request address is [ 0x92217c219165d5af708afea698a910fe9ba4b0c9 ] 
+ vote type: [ reset weight ] 
+ threshod is [ 1 ] 
+ weight is [ 1 ] 
+ vote passed? [ true ] 
+
+add account [ 0x92217c219165d5af708afea698a910fe9ba4b0c9 ] weight [ 1 ] succeed 
+
 ```
 
 ##### 发起添加一个治理账户投票申请
@@ -1524,16 +1767,16 @@ TransactionReceipt removeRelatedAccount(String account)
 
 ```java
 // 发起投票请求
-TransactionReceipt t = socialVoteManager.requestResetAccount(u1.getAddress(), p1.getAddress());
+TransactionReceipt t = socialVoteManager.requestResetAccount(newAddress, oldAddress);
 // 执行投票
 socialVoteManager.vote(requestId, true);
-// 切换投票者
-socialVoteManager.changeCredentials(u1);
+// 切换操作者
+socialVoteManager.changeCredentials(user2);
 socialVoteManager.vote(requestId, true);
-// 切换投票者
-socialVoteManager.changeCredentials(u);
+// 切换操作者
+socialVoteManager.changeCredentials(user1);
 // 发起重置私钥操作
-TransactionReceipt tr = socialVoteManager.resetAccount(u1.getAddress(), p1.getAddress());
+TransactionReceipt tr = socialVoteManager.resetAccount(newAddress, oldAddress);
 ```
 
 #### 发起重置用户私钥投票申请
