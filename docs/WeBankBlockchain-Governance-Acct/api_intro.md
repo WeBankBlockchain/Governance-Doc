@@ -133,18 +133,18 @@ private AdminModeGovernManager adminModeGovernManager;
 #### BasicManager
 包含了用户账户创建，查询用户账户映射的地址，查询用户外部地址和查询用户账户状态等基础功能。**所有用户**可以发起以下操作。
 
-| 功能介绍 | 接口函数签名 | 参数说明|
-| --- | --- | --- |
-| 获取用户的内部映射账户的地址 | String getAccountAddress() |  |
-| 根据外部账户地址创建用户账户 | String createAccount(String externalAccount) | 用户外部账户地址。 |
+| 功能介绍                                     | 接口函数签名                                                                | 参数说明                       |
+| -------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------ |
+| 获取用户的内部映射账户的地址                 | String getAccountAddress()                                                  |                                |
+| 根据外部账户地址创建用户账户                 | String createAccount(String externalAccount)                                | 用户外部账户地址。             |
 | 指定账户管理器地址和外部账户地址创建用户账户 | String createAccount(AccountManager accountManager, String externalAccount) | 账户管理器地址和外部账户地址。 |
-| 根据内部映射账户地址获取外部账户地址 |  String getExternalAccount(String userAccount)  | 内部映射账户的地址。|
-| 根据外部账户地址获取用户账户对象 | UserAccount getUserAccount(String externalAccount) | 用户外部账户地址。 |
-| 获取账户状态 |  int getUserAccountStatus(String externalAccount) | 用户外部账户地址。|
-| 根据外部账户地址获取内部映射账户的地址 |  String getBaseAccountAddress(String externalAccount)  | 用户外部账户地址。 |
-| 判断外部账户地址是否已创建 |  boolean hasAccount(String externalAccount) | 用户外部账户地址。|
-| 判断账户状态是否正常 | boolean isExternalAccountNormal(String externalAccount) | 用户外部账户地址。|
-| 修改绑定的私钥对 |   void changeCredentials(CryptoKeyPair credentials)  | 新的私钥对。|
+| 根据内部映射账户地址获取外部账户地址         | String getExternalAccount(String userAccount)                               | 内部映射账户的地址。           |
+| 根据外部账户地址获取用户账户对象             | UserAccount getUserAccount(String externalAccount)                          | 用户外部账户地址。             |
+| 获取账户状态                                 | int getUserAccountStatus(String externalAccount)                            | 用户外部账户地址。             |
+| 根据外部账户地址获取内部映射账户的地址       | String getBaseAccountAddress(String externalAccount)                        | 用户外部账户地址。             |
+| 判断外部账户地址是否已创建                   | boolean hasAccount(String externalAccount)                                  | 用户外部账户地址。             |
+| 判断账户状态是否正常                         | boolean isExternalAccountNormal(String externalAccount)                     | 用户外部账户地址。             |
+| 修改绑定的私钥对                             | void changeCredentials(CryptoKeyPair credentials)                           | 新的私钥对。                   |
 
 
 ### 治理账户类
@@ -153,77 +153,77 @@ private AdminModeGovernManager adminModeGovernManager;
 
 包含了创建治理治理合约类的接口。只有**治理者**才能发起下述接口的交易。
 
-| 功能介绍 | 接口函数签名 | 参数说明|
-| --- | --- | --- |
-| 创建管理员模式的治理合约 | WEGovernance createGovernAccount(CryptoKeyPair credential) | 管理员账户的私钥。 |
-| 创建投票模式（含多签制和权重投票模式）的治理合约 | GovernAccountGroup governAccountGroup | 包含了治理账户的外部账户地址列表、对应的权重和阈值等配置信息。|
-| 创建多签制模式的治理合约 | WEGovernance createGovernAccount(List<String> externalAccountList, int threshold) | 治理成员外部账户地址列表和通过的阈值。|
-| 创建权重投票模式的治理合约 | WEGovernance createGovernAccount(List<String> externalAccountList, List<BigInteger> weights, int threshold) | 治理成员外部账户地址列表、各治理账户对应的权重和通过的阈值。 |
+| 功能介绍                                         | 接口函数签名                                                                                                | 参数说明                                                       |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| 创建管理员模式的治理合约                         | WEGovernance createGovernAccount(CryptoKeyPair credential)                                                  | 管理员账户的私钥。                                             |
+| 创建投票模式（含多签制和权重投票模式）的治理合约 | GovernAccountGroup governAccountGroup                                                                       | 包含了治理账户的外部账户地址列表、对应的权重和阈值等配置信息。 |
+| 创建多签制模式的治理合约                         | WEGovernance createGovernAccount(List<String> externalAccountList, int threshold)                           | 治理成员外部账户地址列表和通过的阈值。                         |
+| 创建权重投票模式的治理合约                       | WEGovernance createGovernAccount(List<String> externalAccountList, List<BigInteger> weights, int threshold) | 治理成员外部账户地址列表、各治理账户对应的权重和通过的阈值。   |
 
 #### AdminModeGovernManager
 包含了管理员模式下的各类操作接口。只有在超级管理员模式下的**超级管理员**才能发起下述接口的交易。
 
-| 功能介绍 | 接口函数签名 | 参数说明|
-| --- | --- | --- |
-| 移交管理员权限 | TransactionReceipt transferAdminAuth(String newAdminAddr) | 新的管理员外部账户地址。 |
-| 重置用户账户私钥 | TransactionReceipt resetAccount(String oldAccount, String newAccount) | 旧的以及新的用户外部账户地址。|
-| 冻结用户账户 | TransactionReceipt freezeAccount(String externalAccount) | 要冻结的外部账户地址。 |
-| 解冻用户账户 | TransactionReceipt unfreezeAccount(String externalAccount) | 要解冻的外部账户地址。 |
-| 注销用户账户 | TransactionReceipt cancelAccount(String externalAccount) | 要注销的外部账户地址。 |
+| 功能介绍         | 接口函数签名                                                          | 参数说明                       |
+| ---------------- | --------------------------------------------------------------------- | ------------------------------ |
+| 移交管理员权限   | TransactionReceipt transferAdminAuth(String newAdminAddr)             | 新的管理员外部账户地址。       |
+| 重置用户账户私钥 | TransactionReceipt resetAccount(String oldAccount, String newAccount) | 旧的以及新的用户外部账户地址。 |
+| 冻结用户账户     | TransactionReceipt freezeAccount(String externalAccount)              | 要冻结的外部账户地址。         |
+| 解冻用户账户     | TransactionReceipt unfreezeAccount(String externalAccount)            | 要解冻的外部账户地址。         |
+| 注销用户账户     | TransactionReceipt cancelAccount(String externalAccount)              | 要注销的外部账户地址。         |
 
 #### VoteModeGovernManager
 包含了投票模式下的各类操作接口，包含了多签制和阈值投票。其中，多签制也可被视为一种特殊的阈值投票，即所有治理账户的投票阈值为1。只有在投票模式下的**治理者**才能发起下述接口的交易。
 
-| 功能介绍 | 接口函数签名 | 参数说明|
-| --- | --- | --- |
-| 请求重设投票阈值 | BigInteger requestResetThreshold(int newThreshold) | 新投票阈值。 |
-| 请求删除治理账户 |  BigInteger requestRemoveGovernAccount(String externalAccount) | 请求删除的用户外部账户地址。|
-| 请求重置治理账户 | BigInteger requestResetGovernAccount(String externalAccount, int weight) | 待重置的外部账户地址和投票的权重。 |
-| 请求添加治理账户 | BigInteger requestAddGovernAccount(String externalAccount, int weight) | 待添加的外部账户地址和投票的权重。 |
-| 请求添加治理账户 | BigInteger requestAddGovernAccount(String externalAccount) | 待添加的外部账户地址，投票权重默认为1。 |
-| 请求重置用户账户 |  BigInteger requestResetAccount(String newExternalAccount, String oldExternalAccount) | 待重置的新旧两个用户外部账户地址。|
-| 请求冻结用户账户 |  BigInteger requestFreezeAccount(String externalAccount) | 待冻结的用户外部账户地址。|
-| 请求解冻用户账户 |  BigInteger requestUnfreezeAccount(String externalAccount)  | 待解冻的外部账户地址。 |
-| 请求注销用户账户 | BigInteger requestCancelAccount(String externalAccount) | 待注销的外部账户地址。 |
-| 对请求内容进行投票 | TransactionReceipt vote(BigInteger requestId, boolean agreed) | 投票事务的ID和投票意见。 |
-| 执行重置用户账户 | TransactionReceipt resetAccount(BigInteger requestId, String newExternalAccount, String oldExternalAccount) | 投票事务ID，重置的新旧两个用户外部账户地址。 |
-| 执行冻结用户账户 | TransactionReceipt freezeAccount(BigInteger requestId, String externalAccount) | 投票事务ID和操作的外部账户地址。|
-| 执行解冻用户账户 | TransactionReceipt unfreezeAccount(BigInteger requestId, String externalAccount) | 投票事务ID和操作的外部账户地址。 |
-| 执行注销用户账户 |  TransactionReceipt cancelAccount(BigInteger requestId, String externalAccount) | 投票事务ID和操作的外部账户地址。 |
-| 执行重设投票阈值 | TransactionReceipt resetThreshold(BigInteger requestId, int threshold)  | 投票事务ID和重设的阈值。 |
-| 执行删除治理账户 | TransactionReceipt removeGovernAccount(BigInteger requestId, String externalAccount) | 投票事务ID和操作的外部账户地址。 |
-| 执行重置治理账户私钥 | TransactionReceipt resetGovernAccount(BigInteger requestId, String externalAccount, int weight) | 投票事务ID、操作的外部账户地址和重置的阈值。|
-| 执行添加治理账户 | TransactionReceipt addGovernAccount(BigInteger requestId, String externalAccount, int weight) |投票事务ID、操作的外部账户地址和重置的阈值。 |
-| 执行添加治理账户 | TransactionReceipt addGovernAccount(BigInteger requestId, String externalAccount) | 投票事务ID和操作的外部账户地址。默认的投票阈值为1. |
-| 根据交易回执获取投票ID | BigInteger getId(TransactionReceipt tr) | 交易回执。 |
-| 根据投票ID获取投票请求信息 | VoteRequestInfo getVoteRequestInfo(BigInteger requestId) | 投票事务ID。 |
-| 获取治理合约的投票权重信息 |  WeightInfo getWeightInfo() |  |
+| 功能介绍                   | 接口函数签名                                                                                                | 参数说明                                           |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| 请求重设投票阈值           | BigInteger requestResetThreshold(int newThreshold)                                                          | 新投票阈值。                                       |
+| 请求删除治理账户           | BigInteger requestRemoveGovernAccount(String externalAccount)                                               | 请求删除的用户外部账户地址。                       |
+| 请求重置治理账户           | BigInteger requestResetGovernAccount(String externalAccount, int weight)                                    | 待重置的外部账户地址和投票的权重。                 |
+| 请求添加治理账户           | BigInteger requestAddGovernAccount(String externalAccount, int weight)                                      | 待添加的外部账户地址和投票的权重。                 |
+| 请求添加治理账户           | BigInteger requestAddGovernAccount(String externalAccount)                                                  | 待添加的外部账户地址，投票权重默认为1。            |
+| 请求重置用户账户           | BigInteger requestResetAccount(String newExternalAccount, String oldExternalAccount)                        | 待重置的新旧两个用户外部账户地址。                 |
+| 请求冻结用户账户           | BigInteger requestFreezeAccount(String externalAccount)                                                     | 待冻结的用户外部账户地址。                         |
+| 请求解冻用户账户           | BigInteger requestUnfreezeAccount(String externalAccount)                                                   | 待解冻的外部账户地址。                             |
+| 请求注销用户账户           | BigInteger requestCancelAccount(String externalAccount)                                                     | 待注销的外部账户地址。                             |
+| 对请求内容进行投票         | TransactionReceipt vote(BigInteger requestId, boolean agreed)                                               | 投票事务的ID和投票意见。                           |
+| 执行重置用户账户           | TransactionReceipt resetAccount(BigInteger requestId, String newExternalAccount, String oldExternalAccount) | 投票事务ID，重置的新旧两个用户外部账户地址。       |
+| 执行冻结用户账户           | TransactionReceipt freezeAccount(BigInteger requestId, String externalAccount)                              | 投票事务ID和操作的外部账户地址。                   |
+| 执行解冻用户账户           | TransactionReceipt unfreezeAccount(BigInteger requestId, String externalAccount)                            | 投票事务ID和操作的外部账户地址。                   |
+| 执行注销用户账户           | TransactionReceipt cancelAccount(BigInteger requestId, String externalAccount)                              | 投票事务ID和操作的外部账户地址。                   |
+| 执行重设投票阈值           | TransactionReceipt resetThreshold(BigInteger requestId, int threshold)                                      | 投票事务ID和重设的阈值。                           |
+| 执行删除治理账户           | TransactionReceipt removeGovernAccount(BigInteger requestId, String externalAccount)                        | 投票事务ID和操作的外部账户地址。                   |
+| 执行重置治理账户私钥       | TransactionReceipt resetGovernAccount(BigInteger requestId, String externalAccount, int weight)             | 投票事务ID、操作的外部账户地址和重置的阈值。       |
+| 执行添加治理账户           | TransactionReceipt addGovernAccount(BigInteger requestId, String externalAccount, int weight)               | 投票事务ID、操作的外部账户地址和重置的阈值。       |
+| 执行添加治理账户           | TransactionReceipt addGovernAccount(BigInteger requestId, String externalAccount)                           | 投票事务ID和操作的外部账户地址。默认的投票阈值为1. |
+| 根据交易回执获取投票ID     | BigInteger getId(TransactionReceipt tr)                                                                     | 交易回执。                                         |
+| 根据投票ID获取投票请求信息 | VoteRequestInfo getVoteRequestInfo(BigInteger requestId)                                                    | 投票事务ID。                                       |
+| 获取治理合约的投票权重信息 | WeightInfo getWeightInfo()                                                                                  |                                                    |
 
 ### 普通用户账户类
 
 #### EndUserOperManager
 包含了普通用户账户相关的操作。**所有用户**可以发起以下操作。
 
-| 功能介绍 | 接口函数签名 | 参数说明|
-| --- | --- | --- |
-| 重置账户私钥 | TransactionReceipt resetAccount(String newCredential) | 新的外部账户地址。 |
-| 删除社交好友方式重置私钥 | TransactionReceipt modifyManagerType() |  |
-| 修改关联社交好友 | TransactionReceipt modifyManagerType(List<String> voters)  | 三个关联的社交好友。 |
-| 添加关联的社交好友账户 | TransactionReceipt addRelatedAccount(String externalAccount) | 要添加的社交好友外部账户地址。|
-| 删除关联的社交好友账户 | TransactionReceipt removeRelatedAccount(String externalAccount) | 要删除的社交好友外部账户地址。 |
-| 注销用户账户 | TransactionReceipt cancelAccount() | |
-| 查询私钥重置方式 | int getUserStatics()  |  |
+| 功能介绍                 | 接口函数签名                                                    | 参数说明                       |
+| ------------------------ | --------------------------------------------------------------- | ------------------------------ |
+| 重置账户私钥             | TransactionReceipt resetAccount(String newCredential)           | 新的外部账户地址。             |
+| 删除社交好友方式重置私钥 | TransactionReceipt modifyManagerType()                          |                                |
+| 修改关联社交好友         | TransactionReceipt modifyManagerType(List<String> voters)       | 三个关联的社交好友。           |
+| 添加关联的社交好友账户   | TransactionReceipt addRelatedAccount(String externalAccount)    | 要添加的社交好友外部账户地址。 |
+| 删除关联的社交好友账户   | TransactionReceipt removeRelatedAccount(String externalAccount) | 要删除的社交好友外部账户地址。 |
+| 注销用户账户             | TransactionReceipt cancelAccount()                              |                                |
+| 查询私钥重置方式         | int getUserStatics()                                            |                                |
 
 #### SocialVoteManager
 包含了社交好友在行使重置私钥投票功能相关的操作。操作的主体为被其他用户设置并关联的社交好友账户。例如小明设置了三个社交好友的外部账户地址，其中一个好友为小华，当小明丢失了私钥后，可让小华替他发起重置的投票，只要三个社交好友中有两个投票通过，就可以发起重置小明私钥的操作了。这里的SocialVoteManager就是提供了小华相关的操作。
 
 只有被其他用户所委托进行社交好友关联来重置的用户可以发起以下操作。
 
-| 功能介绍 | 接口函数签名 | 参数说明|
-| --- | --- | --- |
-| 申请重置社交好友的私钥 | TransactionReceipt requestResetAccount(String newExternalAccount, String oldExternalAccount)| 需要重置的新旧两个外部账户地址。 |
-| 所关联的社交好友进行投票 |TransactionReceipt vote(String oldExternalAccount, boolean agreed) | 待重置的外部账户地址和投票意见。|
-| 执行重置私钥操作 | TransactionReceipt resetAccount(String newExternalAccount, String oldExternalAccount)| 需要重置的新旧两个外部账户地址。 |
+| 功能介绍                 | 接口函数签名                                                                                 | 参数说明                         |
+| ------------------------ | -------------------------------------------------------------------------------------------- | -------------------------------- |
+| 申请重置社交好友的私钥   | TransactionReceipt requestResetAccount(String newExternalAccount, String oldExternalAccount) | 需要重置的新旧两个外部账户地址。 |
+| 所关联的社交好友进行投票 | TransactionReceipt vote(String oldExternalAccount, boolean agreed)                           | 待重置的外部账户地址和投票意见。 |
+| 执行重置私钥操作         | TransactionReceipt resetAccount(String newExternalAccount, String oldExternalAccount)        | 需要重置的新旧两个外部账户地址。 |
 
 
 ## 使用管理员治理模式
@@ -241,14 +241,6 @@ GovernContractInitializer GovernContractInitializer = new GovernContractInitiali
 @Autowired private GovernContractInitializer governContractInitializer;
 ```
 
-### 创建管理员模式的控制器
-
-可通过手动传参创建管理员模式的控制器。
-```java
-AdminModeGovernManager adminModeManager = new AdminModeGovernManager(governance, client, cryptoKeyPair);
-```
-也可通过自动注入的方式引入。
-
 ### 创建治理合约
 假如治理者确定采用管理员的治理模式，则传入管理者的密钥，创建新的治理合约。
 <br />**具体调用示例：**<br />
@@ -265,6 +257,12 @@ Governance account create succeed [ 0xa84b6989931ec1352a799a0edae3108d8e19bed0 ]
 
 <br />调用成功后，函数会返回对应的WEGovernance治理账户对象，通过getContractAddress()方法可以获得对应的治理合约的地址。<br />
 
+### 创建管理员模式的控制器
+可通过手动传参创建管理员模式的控制器。
+```java
+AdminModeGovernManager adminModeManager = new AdminModeGovernManager(governance, client, cryptoKeyPair);
+```
+也可通过自动注入的方式引入。
 
 ### 调用控制接口
 
@@ -418,6 +416,489 @@ Contract [ 0x7a3868055f88b98a1a5aac81efa20b6ebe10c2ff ] transfer owner to addres
 ## 使用多签制治理模式
 
 ### 引入治理合约创建器
+SDK提供了可通过手动传参，创建GovernContractInitializer对象。
+```java
+GovernContractInitializer GovernContractInitializer = new GovernContractInitializer(client, cryptoKeypair);
+```
+
+或通过自动注入的方式，则用户私钥为默认配置的用户私钥来操作智能合约。
+```java
+// 自动注入GovernAccountInitializer对象
+@Autowired private GovernContractInitializer governContractInitializer;
+```
+
+### 创建治理合约
+例如，以下平台方选择了治理委员会的治理模式，一共有三个参与者参与治理，治理的规则为任意的交易请求获得其中两方的同意，即可获得通过。那么我们接下来将创建一个治理账户。
+
+<br />**具体调用示例：**<br />
+
+```java
+// 1. 配置治理账户信息
+GovernAccountGroup governAccountGroup = new GovernAccountGroup();
+// 投票阈值2， 初始设置3个治理账户。
+governAccountGroup.setThreshold(2);
+governAccountGroup.addGovernUser("user1", governanceUser1Keypair.getAddress());
+governAccountGroup.addGovernUser("user2", governanceUser2Keypair.getAddress());
+governAccountGroup.addGovernUser("user3", governanceUser3Keypair.getAddress());
+// 2. 创建治理合约
+WEGovernance governance = governAccountInitializer.createGovernAccount(governAccountGroup);
+```
+
+执行后返回日志：
+```s
+...
+After add governUser: GovernAccountGroup default group info: 
+GovernUser[user1]: weight is [1] external account is [0x1fa875988195e30a9b7e3ddaa7a2870bc84dc468]
+GovernUser[user2]: weight is [1] external account is [0xac3fb1d6e748697e40672ec1986e58da7d762696]
+GovernUser[user3]: weight is [1] external account is [0x2bdb3029fa9eca8a640101b440ad8de07b015813]
+threshold is [2], total weight is [3]
+-------------------------------------------------------------------------------------------------
+Governance account create succeed [ 0xfd667db2bf205fef03ee8c303f06feaf8e20f3b8 ] 
+```
+
+<br />调用成功后，函数会返回对应的WEGovernance治理账户对象，通过getContractAddress()方法可以获得对应的治理合约的地址。<br />
+
+### 创建管理员模式的控制器
+
+治理委员会模式下的管理功能均位于 VoteModeGovernManager 类中。
+
+可通过手动传参创建管理员模式的控制器。
+```java
+VoteModeGovernManager voteModeGovernManager = new VoteModeGovernManager(governance, client, cryptoKeypair);
+```
+
+### 调用控制接口
+控制接口包括了重置私钥、冻结账户、解冻账户、注销账户、设置治理账户投票阈值、添加治理账户、删除治理账户等功能。
+
+<br />在本模式下，执行任何账户相关的业务操作需要遵循以下步骤：<br />
+
+1. 发起一个投票请求；
+2. 治理账户成员赞同该投票；
+3. 投票发起者确认投票已经通过后，发起操作。
+
+#### 治理委员会成员投票
+<br />我们首先来介绍下通用的投票接口：<br />
+
+**具体调用示例：**
+
+```java
+TransactionReceipt tr = voteModeGovernManager.vote(requestId, true);
+```
+
+<br />**函数签名：**<br />
+
+```java
+TransactionReceipt vote(BigInteger requestId, boolean agreed)
+```
+
+<br />**输入参数：**<br />
+- requestId  发起投票的requestId。
+- agreed 是否同意，true/false
+
+<br />**返回参数：**<br />
+- TransactionReceipt 交易回执
+
+
+#### 重置用户私钥
+
+参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
+<br />**具体调用示例：**<br />
+
+```java
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestResetAccount(p2.getAddress(), p1.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.resetAccount(requestId, p2.getAddress(), p1.getAddress());
+```
+
+##### 发起重置用户私钥投票申请
+
+**函数签名：**
+
+```java
+BigInteger requestResetAccount(String newCredential, String oldCredential)
+```
+
+<br />**输入参数：**<br />
+
+- oldCredential  用户的外部账户的原私钥地址。
+- newCredential  该账户被重置后的私钥地址
+
+
+<br />**返回参数：**<br />
+
+- BigInteger 投票ID，用户需保存该ID便于后续的交互和其他操作。
+
+
+##### 重置用户私钥
+
+**函数签名：**
+
+```java
+    TransactionReceipt resetAccount(BigInteger requestId, String newCredential, String oldCredential)
+```
+
+<br />**输入参数：**<br />
+
+- requestId  之前的投票请求返回的ID
+- newCredential  该账户被重置后的私钥地址
+- oldCredential  用户的外部账户的原私钥地址。
+
+
+<br />**返回参数：**<br />
+
+- TransactionReceipt 交易回执。
+
+
+#### 冻结普通账户
+
+参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
+<br />**具体调用示例：**<br />
+
+```java
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestFreezeAccount(p2.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.freezeAccount(requestId, p2.getAddress());
+```
+
+##### 发起冻结用户账户投票申请
+
+**函数签名：**
+
+```java
+BigInteger requestFreezeAccount(String credential)
+```
+
+<br />**输入参数：**<br />
+
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- BigInteger 投票ID，用户需保存该ID便于后续的交互和其他操作。
+
+
+##### 冻结用户账户
+
+**函数签名：**
+
+```java
+TransactionReceipt freezeAccount(BigInteger requestId, String credential)
+```
+
+<br />**输入参数：**<br />
+
+- requestId  之前的投票请求返回的ID
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- TransactionReceipt 交易回执。
+
+
+#### 解冻普通账户
+
+参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
+<br />**具体调用示例：**<br />
+
+```java
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestUnreezeAccount(p2.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.unfreezeAccount(requestId, p2.getAddress());
+```
+
+##### 发起解冻用户账户投票申请
+
+**函数签名：**
+
+```java
+BigInteger requestunfreezeAccount(String credential)
+```
+
+<br />**输入参数：**<br />
+
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- BigInteger 投票ID，用户需保存该ID便于后续的交互和其他操作。
+
+
+##### 解冻用户账户
+
+**函数签名：**
+
+```java
+TransactionReceipt unfreezeAccount(BigInteger requestId, String credential)
+```
+
+<br />**输入参数：**<br />
+
+- requestId  之前的投票请求返回的ID
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- TransactionReceipt 交易回执。
+
+
+#### 账户强制注销
+
+参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
+<br />**具体调用示例：**<br />
+
+```java
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestCancelAccount(p2.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.cancelAccount(requestId, p2.getAddress());
+```
+
+
+##### 发起注销用户账户投票申请
+
+**函数签名：**
+
+```java
+BigInteger requestCancelAccount(String credential)
+```
+
+<br />**输入参数：**<br />
+
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- BigInteger 投票ID，用户需保存该ID便于后续的交互和其他操作。
+
+
+
+##### 注销用户账户
+
+**函数签名：**
+
+```java
+TransactionReceipt cancelAccount(BigInteger requestId, String credential)
+```
+
+<br />**输入参数：**<br />
+
+- requestId  之前的投票请求返回的ID
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- TransactionReceipt 交易回执。
+
+
+#### 设置治理账户投票的阈值
+
+参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
+<br />**具体调用示例：**<br />
+
+```java
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestResetThreshold(newThreshold);
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.resetThreshold(requestId, newThreshold);
+```
+
+##### 发起重置阈值投票申请
+
+**函数签名：**
+
+```
+BigInteger requestResetThreshold(int newThreshold)
+```
+
+<br />**输入参数：**<br />
+
+- newThreshold  新阈值。
+
+
+<br />**返回参数：**<br />
+
+- BigInteger 投票ID，用户需保存该ID便于后续的交互和其他操作。
+
+
+##### 设置新阈值
+
+**函数签名：**
+
+```
+TransactionReceipt resetThreshold(BigInteger requestId, int threshold)
+```
+
+<br />**输入参数：**<br />
+
+- requestId  之前的投票请求返回的ID
+- newThreshold  新阈值。
+
+
+<br />**返回参数：**<br />
+
+- TransactionReceipt 交易回执。
+
+
+#### 治理账户删除一个投票账户
+
+参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
+<br />**具体调用示例：**<br />
+
+```java
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestRemoveGovernAccount(p2.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.removeGovernAccount(requestId, p2.getAddress());
+```
+
+##### 发起删除一个治理账户投票申请
+
+**函数签名：**
+
+```
+BigInteger requestRemoveGovernAccount(String credential)
+```
+
+<br />**输入参数：**<br />
+
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- BigInteger 投票ID，用户需保存该ID便于后续的交互和其他操作。
+
+
+##### 删除一个投票账户
+
+**函数签名：**
+
+```java
+TransactionReceipt removeGovernAccount(BigInteger requestId, String credential)
+```
+
+<br />**输入参数：**<br />
+
+- requestId  之前的投票请求返回的ID
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- TransactionReceipt 交易回执。
+
+
+#### 治理账户添加一个投票新账户
+
+参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
+<br />**具体调用示例：**<br />
+
+```java
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestAddGovernAccount(p2.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.addGovernAccount(requestId, p2.getAddress());
+```
+
+##### 发起添加一个治理账户投票申请
+
+**函数签名：**
+
+```java
+BigInteger requestAddGovernAccount(String credential)
+```
+
+<br />**输入参数：**<br />
+
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- BigInteger 投票ID，用户需保存该ID便于后续的交互和其他操作。
+
+
+##### 添加一个投票账户
+
+**函数签名：**
+
+```java
+TransactionReceipt addGovernAccount(BigInteger requestId, String credential)
+```
+
+<br />**输入参数：**<br />
+
+- requestId  之前的投票请求返回的ID
+- externalAccount  用户的外部账户地址。
+
+
+<br />**返回参数：**<br />
+
+- TransactionReceipt 交易回执。
+
+
+
+## 使用权重投票治理模式
+
+### 引入治理合约创建器
 
 SDK提供了可通过手动传参，创建GovernContractInitializer对象。
 ```java
@@ -432,88 +913,70 @@ GovernContractInitializer GovernContractInitializer = new GovernContractInitiali
 
 ### 创建治理合约
 
-例如，以下平台方选择了治理委员会的治理模式，一共有三个参与者参与治理，治理的规则为任意的交易请求获得其中两方的同意，即可获得通过。那么我们接下来将创建一个治理账户。
-
+本模式类似于上一种多签制，区别在于每个投票者的投票权重可以是不相同的。
+<br />例如，以下平台方选择了治理委员会的权重投票的治理模式，一共有三个参与者参与治理，投票的权重分别为1、2、3，阈值为4，也就是说任意的赞同选票权重相加超过阈值即可获得通过。那么我们接下来将创建一个治理账户。<br />
 <br />**具体调用示例：**<br />
 
 ```java
-    // 创建一个治理委员会的配置
-    GovernAccountGroup governAccountGroup = new GovernAccountGroup();
-    // 设置投票通过的阈值为2。设置的阈值需小于等于所有治理账户权重之和。
-    governAccountGroup.setThreshold(2);
-    // 随机生成3个治理账户管理成员的私钥对（本实例仅供演示，实际生产中请妥善保管私钥）。传入用户名。
-    GovernUser governUser1 = new GovernUser("user1", cryptoKeyPair.generateKeyPair().getAddress());
-    GovernUser governUser2 = new GovernUser("user2", cryptoKeyPair.generateKeyPair().getAddress());
-    GovernUser governUser3 = new GovernUser("user3", cryptoKeyPair.generateKeyPair().getAddress());
-    // 在治理委员会配置中添加以上创建的治理账户
-    governAccountGroup.addGovernUser(governUser1);
-    governAccountGroup.addGovernUser(governUser2);
-    governAccountGroup.addGovernUser(governUser3);
-    // 创建治理合约。
-    WEGovernance govern = governContractInitializer.createGovernAccount(governAccountGroup);
+// 1. 创建账户和权重列表
+GovernAccountGroup governAccountGroup = new GovernAccountGroup();
+// 创建3个治理账户，合约投票阈值为4，三个账户的投票权重分别为1、2、3
+governAccountGroup.setThreshold(4);
+governAccountGroup.addGovernUser("user1", governanceUser1Keypair.getAddress(), 1);
+governAccountGroup.addGovernUser("user2", governanceUser2Keypair.getAddress(), 2);
+governAccountGroup.addGovernUser("user3", governanceUser3Keypair.getAddress(), 3);
 ```
 
-执行后返回日志：
+执行返回日志：
 ```s
 ...
 After add governUser: GovernAccountGroup default group info: 
-GovernUser[user1]: weight is [1] external account is [0x1fa875988195e30a9b7e3ddaa7a2870bc84dc468]
-GovernUser[user2]: weight is [1] external account is [0xac3fb1d6e748697e40672ec1986e58da7d762696]
-GovernUser[user3]: weight is [1] external account is [0x2bdb3029fa9eca8a640101b440ad8de07b015813]
-threshold is [2], total weight is [3]
+GovernUser[user1]: weight is [1] external account is [0xd91f9fa464ef53b763652fdc170554351f65a207]
+GovernUser[user2]: weight is [2] external account is [0xb64cd5cd4a57cbc16f74c46b342f3b35bfb64c33]
+GovernUser[user3]: weight is [3] external account is [0xc8abcd2857ba484e0867faf184332e0538b932e3]
+threshold is [4], total weight is [6]
 -------------------------------------------------------------------------------------------------
-Governance acct create succeed 0xfd667db2bf205fef03ee8c303f06feaf8e20f3b8 
+Governance acct create succeed [ 0x7f0eef7303d76c3846827cff71925d24522c60c5 ]
 ```
 
 <br />调用成功后，函数会返回对应的WEGovernance治理账户对象，通过getContractAddress()方法可以获得对应的治理合约的地址。<br />
 
-
-
-### 调用控制接口
-
-#### 注入管理器
-
+### 创建管理员模式的控制器
 治理委员会模式下的管理功能均位于 VoteModeGovernManager 类中。
-<br />首先，注入该类：<br />
 
+可通过手动传参创建管理员模式的控制器。
 ```java
-@Autowired
-private VoteModeGovernManager voteModeGovernManager;
+VoteModeGovernManager voteModeGovernManager = new VoteModeGovernManager(governance, client, cryptoKeypair);
 ```
 
+### 调用控制接口
 <br />在本模式下，执行任何账户相关的业务操作需要遵循以下步骤：<br />
 
 1. 发起一个投票请求；
 2. 治理账户成员赞同该投票；
 3. 投票发起者确认投票已经通过后，发起操作。
 
-
-<br />我们首先来介绍下通用的投票接口：<br />
-
 #### 治理委员会成员投票
+<br />我们首先来介绍下通用的投票接口：<br />
 
 **具体调用示例：**
 
 ```java
-    TransactionReceipt tr = voteModeGovernManager.vote(requestId, true);
+TransactionReceipt tr = voteModeGovernManager.vote(requestId, true);
 ```
 
 <br />**函数签名：**<br />
 
 ```java
-    TransactionReceipt vote(BigInteger requestId, boolean agreed)
+TransactionReceipt vote(BigInteger requestId, boolean agreed)
 ```
 
 <br />**输入参数：**<br />
-
 - requestId  发起投票的requestId。
 - agreed 是否同意，true/false
 
-
 <br />**返回参数：**<br />
-
 - TransactionReceipt 交易回执
-
 
 
 #### 重置用户私钥
@@ -580,17 +1043,17 @@ private VoteModeGovernManager voteModeGovernManager;
 <br />**具体调用示例：**<br />
 
 ```java
-    // 发起投票请求
-    BigInteger requestId = voteModeGovernManager.requestFreezeAccount(p2.getAddress());
-    // 执行投票
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u1);
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u);
-    // 发起重置私钥操作
-    TransactionReceipt tr = voteModeGovernManager.freezeAccount(requestId, p2.getAddress());
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestFreezeAccount(p2.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.freezeAccount(requestId, p2.getAddress());
 ```
 
 ##### 发起冻结用户账户投票申请
@@ -598,7 +1061,7 @@ private VoteModeGovernManager voteModeGovernManager;
 **函数签名：**
 
 ```java
-   BigInteger requestFreezeAccount(String credential)
+BigInteger requestFreezeAccount(String credential)
 ```
 
 <br />**输入参数：**<br />
@@ -616,7 +1079,7 @@ private VoteModeGovernManager voteModeGovernManager;
 **函数签名：**
 
 ```java
-   TransactionReceipt freezeAccount(BigInteger requestId, String credential)
+TransactionReceipt freezeAccount(BigInteger requestId, String credential)
 ```
 
 <br />**输入参数：**<br />
@@ -636,17 +1099,17 @@ private VoteModeGovernManager voteModeGovernManager;
 <br />**具体调用示例：**<br />
 
 ```java
-    // 发起投票请求
-    BigInteger requestId = voteModeGovernManager.requestUnreezeAccount(p2.getAddress());
-    // 执行投票
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u1);
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u);
-    // 发起重置私钥操作
-    TransactionReceipt tr = voteModeGovernManager.unfreezeAccount(requestId, p2.getAddress());
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestUnreezeAccount(p2.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.unfreezeAccount(requestId, p2.getAddress());
 ```
 
 ##### 发起解冻用户账户投票申请
@@ -654,7 +1117,7 @@ private VoteModeGovernManager voteModeGovernManager;
 **函数签名：**
 
 ```java
-   BigInteger requestunfreezeAccount(String credential)
+BigInteger requestunfreezeAccount(String credential)
 ```
 
 <br />**输入参数：**<br />
@@ -672,7 +1135,7 @@ private VoteModeGovernManager voteModeGovernManager;
 **函数签名：**
 
 ```java
-   TransactionReceipt unfreezeAccount(BigInteger requestId, String credential)
+TransactionReceipt unfreezeAccount(BigInteger requestId, String credential)
 ```
 
 <br />**输入参数：**<br />
@@ -692,17 +1155,17 @@ private VoteModeGovernManager voteModeGovernManager;
 <br />**具体调用示例：**<br />
 
 ```java
-    // 发起投票请求
-    BigInteger requestId = voteModeGovernManager.requestCancelAccount(p2.getAddress());
-    // 执行投票
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u1);
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u);
-    // 发起重置私钥操作
-    TransactionReceipt tr = voteModeGovernManager.cancelAccount(requestId, p2.getAddress());
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestCancelAccount(p2.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.cancelAccount(requestId, p2.getAddress());
 ```
 
 
@@ -711,7 +1174,7 @@ private VoteModeGovernManager voteModeGovernManager;
 **函数签名：**
 
 ```java
-   BigInteger requestCancelAccount(String credential)
+BigInteger requestCancelAccount(String credential)
 ```
 
 <br />**输入参数：**<br />
@@ -730,7 +1193,7 @@ private VoteModeGovernManager voteModeGovernManager;
 **函数签名：**
 
 ```java
-   TransactionReceipt cancelAccount(BigInteger requestId, String credential)
+TransactionReceipt cancelAccount(BigInteger requestId, String credential)
 ```
 
 <br />**输入参数：**<br />
@@ -750,25 +1213,25 @@ private VoteModeGovernManager voteModeGovernManager;
 <br />**具体调用示例：**<br />
 
 ```java
-    // 发起投票请求
-    BigInteger requestId = voteModeGovernManager.requestResetThreshold(newThreshold);
-    // 执行投票
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u1);
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u);
-    // 发起重置私钥操作
-    TransactionReceipt tr = voteModeGovernManager.resetThreshold(requestId, newThreshold);
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestResetThreshold(newThreshold);
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.resetThreshold(requestId, newThreshold);
 ```
 
-##### 发起设置治理账户投票申请
+##### 发起重置阈值投票申请
 
 **函数签名：**
 
 ```
-    BigInteger requestRemoveGovernAccount(int newThreshold)
+BigInteger requestResetThreshold(int newThreshold)
 ```
 
 <br />**输入参数：**<br />
@@ -786,7 +1249,7 @@ private VoteModeGovernManager voteModeGovernManager;
 **函数签名：**
 
 ```
-   TransactionReceipt resetThreshold(BigInteger requestId, int threshold)
+TransactionReceipt resetThreshold(BigInteger requestId, int threshold)
 ```
 
 <br />**输入参数：**<br />
@@ -806,17 +1269,17 @@ private VoteModeGovernManager voteModeGovernManager;
 <br />**具体调用示例：**<br />
 
 ```java
-    // 发起投票请求
-    BigInteger requestId = voteModeGovernManager.requestRemoveGovernAccount(p2.getAddress());
-    // 执行投票
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u1);
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u);
-    // 发起重置私钥操作
-    TransactionReceipt tr = voteModeGovernManager.removeGovernAccount(requestId, p2.getAddress());
+// 发起投票请求
+BigInteger requestId = voteModeGovernManager.requestRemoveGovernAccount(p2.getAddress());
+// 执行投票
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u1);
+voteModeGovernManager.vote(requestId, true);
+// 切换投票者
+voteModeGovernManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = voteModeGovernManager.removeGovernAccount(requestId, p2.getAddress());
 ```
 
 ##### 发起删除一个治理账户投票申请
@@ -824,7 +1287,7 @@ private VoteModeGovernManager voteModeGovernManager;
 **函数签名：**
 
 ```
-   BigInteger requestRemoveGovernAccount(String credential)
+BigInteger requestRemoveGovernAccount(String credential)
 ```
 
 <br />**输入参数：**<br />
@@ -842,160 +1305,24 @@ private VoteModeGovernManager voteModeGovernManager;
 **函数签名：**
 
 ```java
-   TransactionReceipt removeGovernAccount(BigInteger requestId, String credential)
+TransactionReceipt removeGovernAccount(BigInteger requestId, String credential)
 ```
 
 <br />**输入参数：**<br />
-
 - requestId  之前的投票请求返回的ID
 - externalAccount  用户的外部账户地址。
 
 
 <br />**返回参数：**<br />
-
 - TransactionReceipt 交易回执。
 
-
-#### 治理账户添加一个投票新账户
-
-参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
-<br />**具体调用示例：**<br />
-
-```java
-    // 发起投票请求
-    BigInteger requestId = voteModeGovernManager.requestAddGovernAccount(p2.getAddress());
-    // 执行投票
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u1);
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u);
-    // 发起重置私钥操作
-    TransactionReceipt tr = voteModeGovernManager.addGovernAccount(requestId, p2.getAddress());
-```
 
 ##### 发起添加一个治理账户投票申请
 
 **函数签名：**
 
-```java
-   BigInteger requestAddGovernAccount(String credential)
 ```
-
-<br />**输入参数：**<br />
-
-- externalAccount  用户的外部账户地址。
-
-
-<br />**返回参数：**<br />
-
-- BigInteger 投票ID，用户需保存该ID便于后续的交互和其他操作。
-
-
-##### 添加一个投票账户
-
-**函数签名：**
-
-```java
-   TransactionReceipt addGovernAccount(BigInteger requestId, String credential)
-```
-
-<br />**输入参数：**<br />
-
-- requestId  之前的投票请求返回的ID
-- externalAccount  用户的外部账户地址。
-
-
-<br />**返回参数：**<br />
-
-- TransactionReceipt 交易回执。
-
-
-
-## 使用权重投票治理模式
-
-### 引入治理合约创建器
-
-SDK提供了可通过手动传参，创建GovernContractInitializer对象。
-```java
-GovernContractInitializer GovernContractInitializer = new GovernContractInitializer(client, cryptoKeypair);
-```
-
-或通过自动注入的方式，则用户私钥为默认配置的用户私钥来操作智能合约。
-```java
-// 自动注入GovernAccountInitializer对象
-@Autowired private GovernContractInitializer governContractInitializer;
-```
-
-### 创建治理合约
-
-本模式类似于上一种多签制，区别在于每个投票者的投票权重可以是不相同的。
-<br />例如，以下平台方选择了治理委员会的权重投票的治理模式，一共有三个参与者参与治理，投票的权重分别为1、2、3，阈值为4，也就是说任意的赞同选票权重相加超过阈值即可获得通过。那么我们接下来将创建一个治理账户。<br />
-<br />**具体调用示例：**<br />
-
-```
-    // 创建一个治理委员会的配置
-    GovernAccountGroup governAccountGroup = new GovernAccountGroup();
-    // 设置投票通过的阈值为4。设置的阈值需小于等于所有治理账户权重之和。
-    governAccountGroup.setThreshold(4);
-    // 随机生成3个治理账户管理成员的私钥对（本实例仅供演示，实际生产中请妥善保管私钥）。传入用户名。与多签制不同的是，多传入了一个投票的权重值。
-    GovernUser governUser1 = new GovernUser("user1", cryptoKeyPair.generateKeyPair().getAddress(), 1);
-    GovernUser governUser2 = new GovernUser("user2", cryptoKeyPair.generateKeyPair().getAddress(), 2);
-    GovernUser governUser3 = new GovernUser("user3", cryptoKeyPair.generateKeyPair().getAddress(), 3);
-    // 在治理委员会配置中添加以上创建的治理账户
-    governAccountGroup.addGovernUser(governUser1);
-    governAccountGroup.addGovernUser(governUser2);
-    governAccountGroup.addGovernUser(governUser3);
-    // 创建治理合约。
-    WEGovernance govern = governContractInitializer.createGovernAccount(governAccountGroup);
-```
-
-执行返回日志：
-```
-...
-After add governUser: GovernAccountGroup default group info: 
-GovernUser[user1]: weight is [1] external account is [0xd91f9fa464ef53b763652fdc170554351f65a207]
-GovernUser[user2]: weight is [2] external account is [0xb64cd5cd4a57cbc16f74c46b342f3b35bfb64c33]
-GovernUser[user3]: weight is [3] external account is [0xc8abcd2857ba484e0867faf184332e0538b932e3]
-threshold is [4], total weight is [6]
--------------------------------------------------------------------------------------------------
-Governance acct create succeed 0x7f0eef7303d76c3846827cff71925d24522c60c5 
-```
-
-<br />调用成功后，函数会返回对应的WEGovernance治理账户对象，通过getContractAddress()方法可以获得对应的治理合约的地址。<br />
-
-
-
-#### 不同权重的投票制治理模式
-
-不同权重的投票制模式总体和多签制非常类似，此处不再做过多的赘述，请参考上节。
-
-##### 治理账户添加一个投票新账户
-
-参考上文提及的三个步骤：发起投票请求、投票、执行操作。此处，使用了单SDK来处理多用户的操作，使用了changeCredentials函数来切换不同的用户。
-<br />**具体调用示例：**<br />
-
-```
-    // 发起投票请求
-    BigInteger requestId = voteModeGovernManager.requestAddGovernAccount(p2.getAddress() , weight);
-    // 执行投票
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u1);
-    voteModeGovernManager.vote(requestId, true);
-    // 切换投票者
-    voteModeGovernManager.changeCredentials(u);
-    // 发起重置私钥操作
-    TransactionReceipt tr = voteModeGovernManager.addGovernAccount(requestId, p2.getAddress(), weight);
-```
-
-###### 发起添加一个治理账户投票申请
-
-**函数签名：**
-
-```
-   BigInteger requestAddGovernAccount(String credential, int weight)
+BigInteger requestAddGovernAccount(String credential, int weight)
 ```
 
 <br />**输入参数：**<br />
@@ -1009,12 +1336,12 @@ Governance acct create succeed 0x7f0eef7303d76c3846827cff71925d24522c60c5
 - BigInteger 投票ID，用户需保存该ID便于后续的交互和其他操作。
 
 
-###### 添加一个投票账户
+##### 添加一个治理账户
 
 **函数签名：**
 
 ```
-   TransactionReceipt addGovernAccount(BigInteger requestId, String credential, int weight)
+TransactionReceipt addGovernAccount(BigInteger requestId, String credential, int weight)
 ```
 
 <br />**输入参数：**<br />
@@ -1029,9 +1356,6 @@ Governance acct create succeed 0x7f0eef7303d76c3846827cff71925d24522c60c5
 - TransactionReceipt 交易回执。
 
 
-##### 其他交易
-
-其余部分颇为相似，可参考基于相同权重的投票模式
 
 ## 普通用户操作接口
 
@@ -1051,7 +1375,7 @@ private EndUserOperManager endUserOperManager;
 **具体调用示例：**
 
 ```java
-    String account = endUserAdminManager.createAccount(p1Address);
+String account = endUserAdminManager.createAccount(p1Address);
 ```
 
 <br />**函数签名：**<br />
@@ -1075,13 +1399,13 @@ private EndUserOperManager endUserOperManager;
 **具体调用示例：**
 
 ```java
-    TransactionReceipt tr = endUserAdminManager.resetAccount(p2Address);
+TransactionReceipt tr = endUserAdminManager.resetAccount(p2Address);
 ```
 
 <br />**函数签名：**<br />
 
 ```
-    TransactionReceipt resetAccount(String newCredential)
+TransactionReceipt resetAccount(String newCredential)
 ```
 
 <br />**输入参数：**<br />
@@ -1098,13 +1422,13 @@ private EndUserOperManager endUserOperManager;
 **具体调用示例：**
 
 ```java
-    TransactionReceipt tr = endUserAdminManager.cancelAccount();
+TransactionReceipt tr = endUserAdminManager.cancelAccount();
 ```
 
 <br />**函数签名：**<br />
 
 ```java
-    TransactionReceipt cancelAccount()
+TransactionReceipt cancelAccount()
 ```
 
 <br />**返回参数：**<br />
@@ -1117,19 +1441,19 @@ private EndUserOperManager endUserOperManager;
 **具体调用示例：**
 
 ```java
-    List<String> voters = Lists.newArrayList();
-    voters.add(u.getAddress());
-    voters.add(u1.getAddress());
-    voters.add(u2.getAddress());
-    TransactionReceipt tr = endUserAdminManager.modifyManagerType(voters);
+List<String> voters = Lists.newArrayList();
+voters.add(u.getAddress());
+voters.add(u1.getAddress());
+voters.add(u2.getAddress());
+TransactionReceipt tr = endUserAdminManager.modifyManagerType(voters);
 ```
 
 <br />**函数签名：**<br />
 
 ```java
-    TransactionReceipt modifyManagerType(List<String> voters)
-    //重载函数，设置为仅自己管理
-    TransactionReceipt modifyManagerType()
+TransactionReceipt modifyManagerType(List<String> voters)
+//重载函数，设置为仅自己管理
+TransactionReceipt modifyManagerType()
 ```
 
 <br />**输入参数：**<br />
@@ -1147,13 +1471,13 @@ private EndUserOperManager endUserOperManager;
 **具体调用示例：**
 
 ```java
-    TransactionReceipt tr = endUserAdminManager.addRelatedAccount(userAddress);
+TransactionReceipt tr = endUserAdminManager.addRelatedAccount(userAddress);
 ```
 
 <br />**函数签名：**<br />
 
 ```java
-    TransactionReceipt addRelatedAccount(String account)
+TransactionReceipt addRelatedAccount(String account)
 ```
 
 <br />**输入参数：**<br />
@@ -1171,13 +1495,13 @@ private EndUserOperManager endUserOperManager;
 **具体调用示例：**
 
 ```java
-    TransactionReceipt tr = endUserAdminManager.removeRelatedAccount(userAddress);
+TransactionReceipt tr = endUserAdminManager.removeRelatedAccount(userAddress);
 ```
 
 <br />**函数签名：**<br />
 
 ```java
-    TransactionReceipt removeRelatedAccount(String account)
+TransactionReceipt removeRelatedAccount(String account)
 ```
 
 <br />**输入参数：**<br />
@@ -1199,17 +1523,17 @@ private EndUserOperManager endUserOperManager;
 <br />**具体调用示例：**<br />
 
 ```java
-    // 发起投票请求
-    TransactionReceipt t = socialVoteManager.requestResetAccount(u1.getAddress(), p1.getAddress());
-    // 执行投票
-    socialVoteManager.vote(requestId, true);
-    // 切换投票者
-    socialVoteManager.changeCredentials(u1);
-    socialVoteManager.vote(requestId, true);
-    // 切换投票者
-    socialVoteManager.changeCredentials(u);
-    // 发起重置私钥操作
-    TransactionReceipt tr = socialVoteManager.resetAccount(u1.getAddress(), p1.getAddress());
+// 发起投票请求
+TransactionReceipt t = socialVoteManager.requestResetAccount(u1.getAddress(), p1.getAddress());
+// 执行投票
+socialVoteManager.vote(requestId, true);
+// 切换投票者
+socialVoteManager.changeCredentials(u1);
+socialVoteManager.vote(requestId, true);
+// 切换投票者
+socialVoteManager.changeCredentials(u);
+// 发起重置私钥操作
+TransactionReceipt tr = socialVoteManager.resetAccount(u1.getAddress(), p1.getAddress());
 ```
 
 #### 发起重置用户私钥投票申请
@@ -1236,7 +1560,7 @@ private EndUserOperManager endUserOperManager;
 **函数签名：**
 
 ```java
-    TransactionReceipt vote(String oldCredential, boolean agreed)
+TransactionReceipt vote(String oldCredential, boolean agreed)
 ```
 
 <br />**输入参数：**<br />
@@ -1255,7 +1579,7 @@ private EndUserOperManager endUserOperManager;
 **函数签名：**
 
 ```java
-    TransactionReceipt resetAccount(String newCredential, String oldCredential)
+TransactionReceipt resetAccount(String newCredential, String oldCredential)
 ```
 
 <br />**输入参数：**<br />
