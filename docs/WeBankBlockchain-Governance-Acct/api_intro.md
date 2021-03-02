@@ -7,7 +7,7 @@
 将Jar包引入到用户自己的Springboot业务项目中，此处的项目名以Governance-Account-Demo为例。
 
 在自己的Java项目中的build.gradle文件中，添加maven仓库
-```
+```groovy
     allprojects {
 		repositories {
 			...
@@ -17,7 +17,7 @@
 ```
 
 引入依赖：
-```
+```groovy
     dependencies {
 	    implementation 'com.github.WeBankBlockchain:Governance-Account:master-SNAPSHOT'
 	}
@@ -27,19 +27,19 @@
 
 ### 拷贝证书
 
-```
+```shell
 cd Governance-Account-Demo
 ```
 
 将SDK证书拷贝到项目的conf目录下(这里假设SDK证书位于~/fisco/nodes/127.0.0.1/sdk目录)：
-```
+```shell
 mkdir -p conf && cp -r ~/fisco/nodes/127.0.0.1/sdk/* conf
 ```
 
 ### 修改配置文件
 配置文件位于 src/main/resources/application.properties 目录下
 
-```
+```s
 ## 节点地址和channel端口
 system.nodeStr=127.0.0.1:20200
 ## 群组ID
@@ -60,7 +60,7 @@ system.defaultGovernanceEnabled=true
 #### 自动获取链操作底层的对象
 如果正确配置，可获得自动注入的FISCO BCOS SDK常用的对象。详见[FISCO BCOS Java SDK手册](https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/sdk/java_sdk/index.html)。
 
-```
+```java
 // 自动注入bcosSDK对象,主要包含了SDK相关的操作。
 @Autowired 
 private BcosSDK bcosSDK;
@@ -90,7 +90,7 @@ private CryptoKeyPair cryptoKeyPair;
 3. 与**普通用户账户**操作相关的。继承了BasicManager。
    - 普通用户操作相关的： 如普通用户操作相关的 EndUserOperManager ， 普通用户投票相关的 SocialVoteManager 。
 
-```
+```java
 @Autowired 
 private EndUserOperManager endUserOperManager;
 @Autowired 
