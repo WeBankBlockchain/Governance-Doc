@@ -51,7 +51,7 @@ system.encryptType=0
 ## 配置的客户端私钥，如不配置，则随机生成一个
 # system.hexPrivateKey=33b07356be6d05a930a104d20f482e36e55040e2f8d1af6169419e5e231629ac
 
-## 是否默认开启创建治理合约
+## 是否默认开启创建治理合约，打开后才会自动创建一个管理员模式的治理合约。
 system.defaultGovernanceEnabled=true
 ```
 
@@ -73,11 +73,11 @@ private CryptoKeyPair cryptoKeyPair;
 
 ```
 
-#### 自动获取账户治理接口控制器的对象
+#### 创建账户治理接口控制器的对象
 
 相关的业务操作流程可参考[组件介绍](./intro.md)
 
-账户治理类控制器包括了治理账户控制器（GovernAccountInitializer）、普通账户控制器（EndUserOperManager）、管理员模式的控制器（AdminModeGovernManager）、投票模式的控制器（VoteModeGovernManager）和社交投票控制器（SocialVoteManager）。
+账户治理类控制器包括了治理账户创建器（GovernContractInitializer）、普通账户控制器（EndUserOperManager）、管理员模式的控制器（AdminModeGovernManager）、投票模式的控制器（VoteModeGovernManager）和社交投票控制器（SocialVoteManager）。
 
 其中，可按以下维度划分：
 1. 通用的**基础用户账户**操作。
@@ -90,17 +90,40 @@ private CryptoKeyPair cryptoKeyPair;
 3. 与**普通用户账户**操作相关的。继承了BasicManager。
    - 普通用户操作相关的： 如普通用户操作相关的 EndUserOperManager ， 普通用户投票相关的 SocialVoteManager 。
 
+##### 手动创建
+以下是创建方法, 可选择自动注入GovernContractInitializer对象，然后创建其他的控制器。
 ```java
+@Autowired 
+private GovernContractInitializer GovernContractInitializer;
+```
+
+也可以手动传参，创建GovernContractInitializer对象。
+```java
+GovernContractInitializer GovernContractInitializer = new GovernContractInitializer(client, cryptoKeypair);
+```
+
+选择治理模式，使用GovernContractInitializer对象创新新的治理合约后，进一步创建各自模式和角色的控制器对象。
+```java
+// 使用治理账户创建器（GovernContractInitializer）所创建的治理合约对象governance 
+EndUserOperManager endUserOperManager = new EndUserOperManager(governance, client, cryptoKeypair);
+SocialVoteManager socialVoteManager = new SocialVoteManager(governance, client, cryptoKeypair);
+AdminModeGovernManager adminModeManager = new AdminModeGovernManager(governance, client, cryptoKeypair);
+VoteModeGovernManager voteModeGovernManager = new VoteModeGovernManager(governance, client, cryptoKeypair);
+
+```
+
+##### 自动注入
+如果打开了默认开启创建治理合约，则会使用配置的私钥来默认创建一个管理员模式的治理账户（一般用于快速演示）。相关的合约管理器也会被自动注入进来。
+
+```java
+@Autowired 
+private GovernContractInitializer GovernContractInitializer;
 @Autowired 
 private EndUserOperManager endUserOperManager;
 @Autowired 
 private SocialVoteManager socialVoteManager;
 @Autowired 
-private GovernContractInitializer GovernContractInitializer;
-@Autowired 
 private AdminModeGovernManager adminModeGovernManager;
-@Autowired 
-private VoteModeGovernManager voteModeGovernManager
 ```
 
 ## 功能列表
@@ -205,31 +228,39 @@ private VoteModeGovernManager voteModeGovernManager
 
 ## 使用管理员治理模式
 
-### 自动注入管理对象
-SDK提供了GovernAccountInitializer类来创建治理合约，该接口可被自动注入到工程中。
+### 引入治理合约创建器
 
-CryptoKeyPair也被自动注入，可用于生成私钥对。
+SDK提供了可通过手动传参，创建GovernContractInitializer对象。
 ```java
-    // 自动注入GovernAccountInitializer对象
-    @Autowired private GovernContractInitializer governContractInitializer;
-    // 自动注入CryptoKeyPair对象
-    @Autowired private CryptoKeyPair cryptoKeyPair;
+GovernContractInitializer GovernContractInitializer = new GovernContractInitializer(client, cryptoKeypair);
 ```
 
+或通过自动注入的方式，则用户私钥为默认配置的用户私钥来操作智能合约。
+```java
+// 自动注入GovernAccountInitializer对象
+@Autowired private GovernContractInitializer governContractInitializer;
+```
+
+### 创建管理员模式的控制器
+
+可通过手动传参创建管理员模式的控制器。
+```java
+AdminModeGovernManager adminModeManager = new AdminModeGovernManager(governance, client, cryptoKeyPair);
+```
+也可通过自动注入的方式引入。
+
 ### 创建治理合约
-假如治理者确定采用管理员的治理模式，那么需要首先生成一个管理员的治理账户。随后，使用管理员的账户来创建治理合约。
+假如治理者确定采用管理员的治理模式，则传入管理者的密钥，创建新的治理合约。
 <br />**具体调用示例：**<br />
 
 ```
-    // 使用自动注入的cryptoKeyPair随机创建一组管理员账户的私钥对
-    CryptoKeyPair governUserKeypair = cryptoKeyPair.generateKeyPair();
-    // 调用 createGovernAccount 方法创建治理合约
-    WEGovernance govern = adminModeManager.createGovernAccount(governUserKeypair);
+// 调用 createGovernAccount 方法创建治理合约
+WEGovernance governance = adminModeManager.createGovernAccount(cryptoKeyPair);
 ```
 
 执行返回日志：
 ```s
-Governance acct create succeed 0x44209c57874cc7e6654f76e4940d8d05c7c3881a 
+Governance account create succeed [ 0xa84b6989931ec1352a799a0edae3108d8e19bed0 ] 
 ```
 
 <br />调用成功后，函数会返回对应的WEGovernance治理账户对象，通过getContractAddress()方法可以获得对应的治理合约的地址。<br />
@@ -237,29 +268,20 @@ Governance acct create succeed 0x44209c57874cc7e6654f76e4940d8d05c7c3881a
 
 ### 调用控制接口
 
-#### 注入管理器
-
-管理员模式下的管理功能均位于AdminModeGovernManager类中。
-<br />首先，注入该类：<br />
-
-```java
-@Autowired
-private AdminModeGovernManager adminModeManager;
-```
-
+控制接口包括了重置私钥、冻结账户、解冻账户、注销账户、移交管理员权限等功能。
 
 #### 重置用户私钥
 
 **具体调用示例：**
 
 ```java
-    TransactionReceipt tr = adminModeManager.resetAccount(u1Address, u2Address);
+TransactionReceipt tr = adminModeManager.resetAccount(u1Address, u2Address);
 ```
 
 <br />**函数签名：**<br />
 
 ```java
-    TransactionReceipt resetAccount(String oldAccount, String newAccount)
+TransactionReceipt resetAccount(String oldAccount, String newAccount)
 ```
 
 <br />**输入参数：**<br />
@@ -272,19 +294,24 @@ private AdminModeGovernManager adminModeManager;
 
 - TransactionReceipt 交易回执
 
+<br />**参考执行返回日志：**<br />
+```s
+reset account to [ 0x8a73e5c031c176ecf4bb156c59271847e985fc25 ] from [ 0xfc51a229193e1277844fc6c547fe6877c9f0bbac ]
+```
+
 
 #### 冻结普通账户
 
 **具体调用示例：**
 
 ```java
-    TransactionReceipt tr = adminModeManager.freezeAccount(u1Address);
+TransactionReceipt tr = adminModeManager.freezeAccount(u1Address);
 ```
 
 <br />**函数签名：**<br />
 
 ```java
-    TransactionReceipt freezeAccount(String account)
+TransactionReceipt freezeAccount(String account)
 ```
 
 <br />**输入参数：**<br />
@@ -295,6 +322,11 @@ private AdminModeGovernManager adminModeManager;
 <br />**返回参数：**<br />
 
 - TransactionReceipt 交易回执
+
+<br />**参考执行返回日志：**<br />
+```s
+freeze account [ 0xfc51a229193e1277844fc6c547fe6877c9f0bbac ]
+```
 
 
 #### 解冻普通账户
@@ -320,19 +352,23 @@ private AdminModeGovernManager adminModeManager;
 
 - TransactionReceipt 交易回执
 
+<br />**参考执行返回日志：**<br />
+```s
+unfreeze account [ 0xfc51a229193e1277844fc6c547fe6877c9f0bbac ]
+```
 
 #### 账户强制注销
 
 **具体调用示例：**
 
 ```java
-    TransactionReceipt tr = GovernContractInitializer.cancelAccount(u1Address);
+TransactionReceipt tr = GovernContractInitializer.cancelAccount(u1Address);
 ```
 
 <br />**函数签名：**<br />
 
 ```java
-    TransactionReceipt cancelAccount(String account)
+TransactionReceipt cancelAccount(String account)
 ```
 
 <br />**输入参数：**<br />
@@ -344,7 +380,10 @@ private AdminModeGovernManager adminModeManager;
 
 - TransactionReceipt 交易回执
 
-
+<br />**参考执行返回日志：**<br />
+```s
+cancel account [ 0xfc51a229193e1277844fc6c547fe6877c9f0bbac ]
+```
 
 #### 移交管理员的权限
 
@@ -352,13 +391,13 @@ private AdminModeGovernManager adminModeManager;
 <br />**具体调用示例：**<br />
 
 ```java
-    TransactionReceipt tr = adminModeManager.transferAdminAuth(u1Address);
+TransactionReceipt tr = adminModeManager.transferAdminAuth(u1Address);
 ```
 
 <br />**函数签名：**<br />
 
 ```java
-    TransactionReceipt transferAdminAuth(String account)
+TransactionReceipt transferAdminAuth(String account)
 ```
 
 <br />**输入参数：**<br />
@@ -370,18 +409,25 @@ private AdminModeGovernManager adminModeManager;
 
 - TransactionReceipt 交易回执
 
+<br />**参考执行返回日志：**<br />
+```s
+Contract [ 0x7a3868055f88b98a1a5aac81efa20b6ebe10c2ff ] transfer owner to address [ 0x8a73e5c031c176ecf4bb156c59271847e985fc25 ]
+```
+
 
 ## 使用多签制治理模式
 
-### 自动注入管理对象
-SDK提供了GovernAccountInitializer类来创建治理合约，该接口可被自动注入到工程中。
+### 引入治理合约创建器
 
-CryptoKeyPair也被自动注入，可用于生成私钥对。
+SDK提供了可通过手动传参，创建GovernContractInitializer对象。
 ```java
-    // 自动注入GovernAccountInitializer对象
-    @Autowired private GovernContractInitializer governContractInitializer;
-    // 自动注入CryptoKeyPair对象
-    @Autowired private CryptoKeyPair cryptoKeyPair;
+GovernContractInitializer GovernContractInitializer = new GovernContractInitializer(client, cryptoKeypair);
+```
+
+或通过自动注入的方式，则用户私钥为默认配置的用户私钥来操作智能合约。
+```java
+// 自动注入GovernAccountInitializer对象
+@Autowired private GovernContractInitializer governContractInitializer;
 ```
 
 ### 创建治理合约
@@ -404,7 +450,7 @@ CryptoKeyPair也被自动注入，可用于生成私钥对。
     governAccountGroup.addGovernUser(governUser2);
     governAccountGroup.addGovernUser(governUser3);
     // 创建治理合约。
-    WEGovernance govern = GovernContractInitializer.createGovernAccount(governAccountGroup);
+    WEGovernance govern = governContractInitializer.createGovernAccount(governAccountGroup);
 ```
 
 执行后返回日志：
@@ -488,7 +534,6 @@ private VoteModeGovernManager voteModeGovernManager;
     // 发起重置私钥操作
     TransactionReceipt tr = voteModeGovernManager.resetAccount(requestId, p2.getAddress(), p1.getAddress());
 ```
-
 
 ##### 发起重置用户私钥投票申请
 
@@ -870,6 +915,21 @@ private VoteModeGovernManager voteModeGovernManager;
 
 ## 使用权重投票治理模式
 
+### 引入治理合约创建器
+
+SDK提供了可通过手动传参，创建GovernContractInitializer对象。
+```java
+GovernContractInitializer GovernContractInitializer = new GovernContractInitializer(client, cryptoKeypair);
+```
+
+或通过自动注入的方式，则用户私钥为默认配置的用户私钥来操作智能合约。
+```java
+// 自动注入GovernAccountInitializer对象
+@Autowired private GovernContractInitializer governContractInitializer;
+```
+
+### 创建治理合约
+
 本模式类似于上一种多签制，区别在于每个投票者的投票权重可以是不相同的。
 <br />例如，以下平台方选择了治理委员会的权重投票的治理模式，一共有三个参与者参与治理，投票的权重分别为1、2、3，阈值为4，也就是说任意的赞同选票权重相加超过阈值即可获得通过。那么我们接下来将创建一个治理账户。<br />
 <br />**具体调用示例：**<br />
@@ -888,7 +948,7 @@ private VoteModeGovernManager voteModeGovernManager;
     governAccountGroup.addGovernUser(governUser2);
     governAccountGroup.addGovernUser(governUser3);
     // 创建治理合约。
-    WEGovernance govern = GovernContractInitializer.createGovernAccount(governAccountGroup);
+    WEGovernance govern = governContractInitializer.createGovernAccount(governAccountGroup);
 ```
 
 执行返回日志：
