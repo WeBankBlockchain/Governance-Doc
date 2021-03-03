@@ -26,5 +26,9 @@
    intro.md
    quickstart.md
    api_intro.md
+   admin_mode.md
+   multi_sig.md
+   weight_vote.md
+   end_user.md
    demo.md
 ```
