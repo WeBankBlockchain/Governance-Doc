@@ -30,5 +30,6 @@
    multi_sig.md
    weight_vote.md
    end_user.md
+   social_vote.md
    demo.md
 ```
