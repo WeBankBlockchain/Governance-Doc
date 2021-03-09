@@ -8,7 +8,7 @@ WeBankBlockchain-Governance 技术文档
 
     WeBankBlockchain-Governance 是微众银行立足于分布式协作的联盟链场景，提炼和解决了常见的痛点和问题，所打造的一系列简单好用的组件，助力区块链社区、生态和产品协调发展。
 
-    WeBankBlockchain-Governance 是一套稳定、高效、安全的区块治理组件解决方案，可无缝适配FISCO BCOS区块链底层平台。
+    WeBankBlockchain-Governance 是一套稳定、高效、安全的区块链治理组件解决方案，可无缝适配FISCO BCOS区块链底层平台。
     首批开源的有账户治理组件(WeBankBlockchain-Governance-Account)、权限治理组件(WeBankBlockchain-Governance-Auth)、 私钥管理组件(WeBankBlockchain-Governance-Key)和证书管理组件（WeBankBlockchain-Governance-Cert）。
 
     这四个组件分别从私钥丢失重置、合约权限细粒度管控、私钥和证书的全生命周期管控等方面着手，提供了可部署的智能合约代码、易于使用的SDK和可参考的落地实践Demo等交付物。
