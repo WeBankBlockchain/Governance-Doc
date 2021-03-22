@@ -34,6 +34,13 @@
 git clone https://github.com/WeBankBlockchain/Governance-Authority.git
 cd auth-manager/src/main/contracts
 ```
+
+```eval_rst
+.. note::
+    - 如果因为网络问题导致长时间无法下载，请尝试：git clone https://gitee.com/WeBankBlockchain/Governance-Authority.git
+```
+
+
 ### 启动控制台
 现在我们将所有合约代码（即上文auth-manager/src/main/contracts目录中的所有代码）拷贝到控制台的contracts/solidity目录下。
 

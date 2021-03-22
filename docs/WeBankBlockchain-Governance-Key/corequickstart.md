@@ -12,6 +12,12 @@ git clone https://github.com/WeBankBlockchain/Governance-Key.git
 cd Governance-Key
 ```
 
+```eval_rst
+.. note::
+    - 如果因为网络问题导致长时间无法下载，请尝试：git clone https://gitee.com/WeBankBlockchain/Governance-Key.git
+```
+
+
 ## 使用可视化界面
 进入目录：
 ```
