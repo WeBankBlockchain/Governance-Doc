@@ -32,7 +32,7 @@
 通过git下载源码，获取智能合约
 ```
 git clone https://github.com/WeBankBlockchain/Governance-Authority.git
-cd auth-manager/src/main/contracts
+cd Governance-Authority/src/main/contracts
 ```
 
 ```eval_rst
