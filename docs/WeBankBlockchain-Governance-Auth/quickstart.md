@@ -49,7 +49,14 @@ cd Governance-Authority/src/main/contracts
 bash get_account.sh
 bash get_account.sh
 ```
-该身份会以pem形式保存在控制台的accounts目录下。我们将第一个身份称为“治理者账户”，用于操作权限合约；第二个身份扮演“业务方账户”，用于调用HelloWorld合约。以治理员身份启动控制台：
+该身份会以pem形式保存在控制台的accounts目录下。我们将第一个身份称为“治理者账户”，用于操作权限合约；第二个身份扮演“业务方账户”，用于调用HelloWorld合约。
+
+```eval_rst
+.. note::
+    get_account.sh只支持生成非国密的账户，如需生成国密账户，请使用Java SDK来生成，请参考 _`文档 <https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/articles/3_features/35_contract/outside_account_generation.html?highlight=get_account.sh#java-sdk)>`_ 
+```
+
+以治理员身份启动控制台：
 ```
 bash start.sh 1 -pem [治理员pem文件，如accounts/xxx.pem]
 ```
@@ -78,7 +85,7 @@ contract HelloWorld{
     
 }
 ```
-接下来引入前面下载的IAuthControl，按下述方式引入该合约：
+为了实现权限管理，接下来引入前面下载的IAuthControl，以Solidity V0.4.25版本为例。按下述方式引入该合约：
 ```
 pragma solidity ^0.4.25;
 
@@ -118,6 +125,32 @@ contact address: [HelloWorld合约地址]
 其中，构造函数传入的是权限合约地址，这个地址是前面权限合约部署后的地址。
 
 至此，业务方的接入工作已经完成，但现在部署后权限还没有起到效果，因为需要治理方在权限合约中进行权限规则配置。
+
+操作的参考日志信息如下：
+```shell
+ $ ./start.sh 1 -pem accounts/0x2506ee8bbcfca9fc7f553859f64db56147128a8a.pem
+=============================================================================================
+Welcome to FISCO BCOS console(2.7.1)!
+Type 'help' or 'h' for help. Type 'quit' or 'q' to quit console.
+ ________ ______  ______   ______   ______       _______   ______   ______   ______
+|        |      \/      \ /      \ /      \     |       \ /      \ /      \ /      \
+| $$$$$$$$\$$$$$|  $$$$$$|  $$$$$$|  $$$$$$\    | $$$$$$$|  $$$$$$|  $$$$$$|  $$$$$$\
+| $$__     | $$ | $$___\$| $$   \$| $$  | $$    | $$__/ $| $$   \$| $$  | $| $$___\$$
+| $$  \    | $$  \$$    \| $$     | $$  | $$    | $$    $| $$     | $$  | $$\$$    \
+| $$$$$    | $$  _\$$$$$$| $$   __| $$  | $$    | $$$$$$$| $$   __| $$  | $$_\$$$$$$\
+| $$      _| $$_|  \__| $| $$__/  | $$__/ $$    | $$__/ $| $$__/  | $$__/ $|  \__| $$
+| $$     |   $$ \\$$    $$\$$    $$\$$    $$    | $$    $$\$$    $$\$$    $$\$$    $$
+ \$$      \$$$$$$ \$$$$$$  \$$$$$$  \$$$$$$      \$$$$$$$  \$$$$$$  \$$$$$$  \$$$$$$
+
+=============================================================================================
+[group:1]> deploy AuthManager 1 [] [] 0
+transaction hash: 0x405aaa3f4d352ddb11657b15a8024249dac73c76f8b2d52ec90f05a1bbf32f79
+contract address: 0x7f376e8f28a48ae56fbc5f6eba76519eb22bfbb8
+
+[group:1]> deploy HelloWorld "0x7f376e8f28a48ae56fbc5f6eba76519eb22bfbb8"
+transaction hash: 0xbf5aa9ddd06adf465d5f4783b1c1728f5eb7f09ddc228f22f589521a93727a4f
+contract address: 0xaaca21d10d281c2c486718909fa7acfc1852a843
+```
 
 ## 权限配置
 现在以治理方的身份启动控制台，以便操作权限治理合约：
