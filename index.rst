@@ -48,9 +48,8 @@ WeBankBlockchain-Governance 技术文档
     提供证书生成、验证、子证书请求等证书全生命周期管理的通用解决方案。
     请参考 `文档 <./docs/WeBankBlockchain-Governance-Cert/index.html>`_
 
-
-
 .. toctree::
+   :hidden:
    :maxdepth: 3
    :caption: 组件介绍
 
@@ -58,6 +57,7 @@ WeBankBlockchain-Governance 技术文档
    ./docs/WeBankBlockchain-Governance-Auth/index.md
    ./docs/WeBankBlockchain-Governance-Key/index.md
    ./docs/WeBankBlockchain-Governance-Cert/index.md
+   ./docs/all_projects.rst
    ./docs/appendix.md
 .. 
 
