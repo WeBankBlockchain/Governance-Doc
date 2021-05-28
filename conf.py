@@ -99,7 +99,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'WeBankBlockchain-Governance-Doc'
-copyright = u'© 2020. All rights reserved.'
+copyright = u'© 2021. All rights reserved.'
 author = u'WeBankBlockchain-dev'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -158,7 +158,7 @@ pygments_style = 'sphinx'
 html_theme = 'sphinx_rtd_theme'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme_options = {'navigation_depth': 4,}
+html_theme_options = {'navigation_depth': 5,}
 using_rtd_theme = True
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 todo_include_todos = True

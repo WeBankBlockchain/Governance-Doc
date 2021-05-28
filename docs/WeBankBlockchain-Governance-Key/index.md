@@ -25,9 +25,9 @@
 .. toctree::
    :maxdepth: 3
    
+   concepts.md
    intro.md
    depend.md
-   concepts.md
    corequickstart.md
    mgrquickstart.md
    javadoc.md
