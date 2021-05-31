@@ -41,6 +41,7 @@ java -jar key-core-web.jar
 
 ![](img/keycoreweb.png)
 
+可以使用密钥格式转换、助记词等功能。注意文件格式仅支持.keystore, .json, .pem, .p12这几种格式。
 
 ## 使用sdk
 
