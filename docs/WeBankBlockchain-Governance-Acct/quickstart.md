@@ -207,7 +207,7 @@ event value: (0x1c7560296c101171eb8015cdc6cfbda26c866189, 0x39be54ce16ccb720aa0f
 <br />查询普通账户地址<br />
 
 ```
-[group:1]> call AccountManager 0xf0da09d98fe320371fe30d1bd035f0cabc305eaf getAccount "0x1c7560296c101171eb8015cdc6cfbda26c866189"
+[group:1]> call AccountManager 0xf0da09d98fe320371fe30d1bd035f0cabc305eaf getUserAccount "0x1c7560296c101171eb8015cdc6cfbda26c866189"
 0x39be54ce16ccb720aa0ffedea27a7e3621565598
 ```
 
@@ -457,7 +457,7 @@ XXContract {
     // ……
   function doSomeBiz() public {
         // 获得普通用户的地址
-        address userAccountAddress = _accountManager.getAccount(msg.sender);
+        address userAccountAddress = _accountManager.getUserAccount(msg.sender);
 		// **特别注意**： 在具体的业务中，需使用此普通用户的地址来代替以往的外部地址。
         doBiz(userAccountAddress);
   }
@@ -482,7 +482,7 @@ contract TransferDemo {
         // 初始化accountManager，此地址由上面的部署治理合约步骤获得。
         _accountManager = AccountManager(accountManager);
 		// 合约的owner设置为用户普通账户的地址
-        address owner = _accountManager.getAccount(msg.sender);
+        address owner = _accountManager.getUserAccount(msg.sender);
         _balances[owner] = initBalance;
     }
 
@@ -497,7 +497,7 @@ contract TransferDemo {
    // ……
     function balance(address owner) public view returns (uint256) {
         // 1.先根据外部账户的地址查询普通账户的地址，然后仔查询余额
-        return _balances[_accountManager.getAccount(owner)];
+        return _balances[_accountManager.getUserAccount(owner)];
     }
     function transfer(address toAddress, uint256 value)
         public
@@ -508,13 +508,13 @@ contract TransferDemo {
         returns (bool)
     {
         // 1. 查询转出方的普通账户地址
-        address fromAccount = _accountManager.getAccount(msg.sender);
+        address fromAccount = _accountManager.getUserAccount(msg.sender);
         // 2. 查询转出方普通账户余额
         uint256 balanceOfFrom = _balances[fromAccount].sub(value);
         // 3. 转出方金额扣除
         _balances[fromAccount] = balanceOfFrom;
         // 4. 查询转入方的普通账户地址
-        address toAccount = _accountManager.getAccount(toAddress);
+        address toAccount = _accountManager.getUserAccount(toAddress);
         // 5. 转入方余额增加
         uint256 balanceOfTo = _balances[toAccount].add(value);
         // 设置转入方普通账户的余额
