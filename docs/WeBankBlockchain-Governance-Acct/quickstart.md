@@ -162,7 +162,7 @@ contract address: 0xbf8b5357a01232ab2e3ac8922fbe9a425afba026
 0x9ba26b43e00fb112da14b509715b868bb8fb1a2d
 # 获取账户管理控制器的地址
 [group:1]> call WeightVoteGovernBuilder 0xbf8b5357a01232ab2e3ac8922fbe9a425afba026 getAccountManager
-0x2c02a11a0fc9eaf1ded01e844b35456aeb352261
+0xf0da09d98fe320371fe30d1bd035f0cabc305eaf
 ```
 
 <br />以上，我们分别展示了如何在链上部署超级管理员模式和治理委员会模式（包括多签制和权重制）的治理合约的部署。<br />
