@@ -11,6 +11,11 @@
 | Git | 下载的安装包使用Git | |
 
 ```eval_rst
+.. important::
+    FISCO-BCOS 2.0与3.0对比、JDK版本、WeBankBlockChain-Governance及其他子系统的 `兼容版本说明 <https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/compatibility.html>`_
+```
+
+```eval_rst
 .. note::
     - JDK1.8 或者以上版本，推荐使用OracleJDK。CentOS的yum仓库的OpenJDK缺少JCE(Java Cryptography Extension)，会导致JavaSDK无法正常连接区块链节点。
     - 参考  `Java环境配置 <https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/sdk/java_sdk/quick_start.html#id2>`_  

@@ -2,6 +2,10 @@
 
 Key-core支持两种使用模式：可视化模式和sdk模式。在可视化模式下，会启动一个本地的网站，上面包含了私钥操作的核心功能。在sdk模式下，用户可将sdk引入到自己的项目中，并根据sdk提供的私钥功能来实现自己的业务代码。
 
+```eval_rst
+.. important::
+    FISCO-BCOS 2.0与3.0对比、JDK版本、WeBankBlockChain-Governance及其他子系统的 `兼容版本说明 <https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/compatibility.html>`_
+```
 
 ## 源码下载
 
