@@ -48,6 +48,9 @@ WeBankBlockchain-Governance 技术文档
     提供证书生成、验证、子证书请求等证书全生命周期管理的通用解决方案。
     请参考 `文档 <./docs/WeBankBlockchain-Governance-Cert/index.html>`_
 
+.. important::
+    FISCO-BCOS 2.0与3.0对比、JDK版本、WeBankBlockChain-Governance及其他子系统的 `兼容版本说明 <https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/compatibility.html>`_
+    
 .. toctree::
    :hidden:
    :maxdepth: 3
