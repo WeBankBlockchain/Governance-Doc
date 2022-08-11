@@ -19,7 +19,7 @@
 引入依赖：
 ```groovy
     dependencies {
-	    implementation 'com.github.WeBankBlockchain:Governance-Account:master-SNAPSHOT'
+	    implementation 'com.github.WebankBlockchain:Governance-Account:v3.0.0-SNAPSHOT'
 	}
 ```
 
