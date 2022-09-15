@@ -119,7 +119,7 @@ $ tar -zxvf jdk-8u201-linux-x64.tar.gz
 # 配置Java环境，编辑/etc/profile文件 
 $ vim /etc/profile 
 # 打开以后将下面三句输入到文件里面并退出
-export JAVA_HOME=/software/jdk-8u201-linux-x64.tar.gz
+export JAVA_HOME=/software/jdk1.8.0_201
 export PATH=$JAVA_HOME/bin:$PATH 
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 # 生效profile
