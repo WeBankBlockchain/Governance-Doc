@@ -29,7 +29,7 @@
 使用git下载源码：
 ```
 git clone https://github.com/WeBankBlockchain/Governance-Account.git
-git checkout v3.0.0
+git checkout V3
 ```
 
 ```eval_rst
